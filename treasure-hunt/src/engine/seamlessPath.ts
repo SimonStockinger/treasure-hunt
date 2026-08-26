@@ -1,48 +1,118 @@
 import type { DynamicIsland } from "./archipelagoLayout";
 import type { Point } from "../types";
 
-/**
- * Erzeugt einen durchgehenden Bézier-Pfad über alle Inseln und Events
- */
 export function generateSeamlessMasterRoute(islands: DynamicIsland[]): string {
-    const masterPoints: Point[] = [];
+    if (islands.length === 0) return "";
+
+    const segments: string[] = [];
 
     for (let i = 0; i < islands.length; i++) {
         const current = islands[i];
 
-        // 1. Schiff erreicht den Insel-Anleger
-        masterPoints.push(current.entryPoint);
-
-        // 2. Fußweg führt über alle Events des Tages
+        // 1. Inland-Trampelpfad
+        const inlandPoints: Point[] = [current.entryPoint];
         if (current.eventPoints.length > 0) {
-            masterPoints.push(...current.eventPoints);
+            inlandPoints.push(...current.eventPoints);
         } else {
-            masterPoints.push(current.center);
+            inlandPoints.push(current.center);
         }
+        inlandPoints.push(current.exitPoint);
 
-        // 3. Weg führt zum Auslauf-Hafen
-        masterPoints.push(current.exitPoint);
+        if (i === 0) {
+            segments.push(
+                `M ${inlandPoints[0].x.toFixed(1)} ${inlandPoints[0].y.toFixed(1)}`,
+            );
+        }
+        segments.push(generateInlandSubPath(inlandPoints));
+
+        // 2. Weite Hochsee-Passage zur nächsten Insel
+        if (i < islands.length - 1) {
+            const next = islands[i + 1];
+            const seaCurve = createDramaticSeaRoute(
+                current.exitPoint,
+                next.entryPoint,
+                islands,
+                i,
+                i + 1,
+            );
+            segments.push(seaCurve);
+        }
     }
 
-    return pointsToSmoothSvg(masterPoints);
+    return segments.join(" ");
 }
 
-function pointsToSmoothSvg(points: Point[]): string {
-    if (points.length < 2) return "";
-    let d = `M ${points[0].x.toFixed(1)} ${points[0].y.toFixed(1)}`;
-
-    for (let i = 0; i < points.length - 1; i++) {
-        const p0 = points[i === 0 ? i : i - 1];
-        const p1 = points[i];
-        const p2 = points[i + 1];
-        const p3 = points[i + 2] || p2;
-
-        const cp1x = p1.x + (p2.x - p0.x) / 5;
-        const cp1y = p1.y + (p2.y - p0.y) / 5;
-        const cp2x = p2.x - (p3.x - p1.x) / 5;
-        const cp2y = p2.y - (p3.y - p1.y) / 5;
-
-        d += ` C ${cp1x.toFixed(1)} ${cp1y.toFixed(1)}, ${cp2x.toFixed(1)} ${cp2y.toFixed(1)}, ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+function generateInlandSubPath(pts: Point[]): string {
+    let d = "";
+    for (let j = 0; j < pts.length - 1; j++) {
+        const p1 = pts[j];
+        const p2 = pts[j + 1];
+        const midX = (p1.x + p2.x) / 2 + (j % 2 === 0 ? 1 : -1) * 10;
+        const midY = (p1.y + p2.y) / 2;
+        d += ` Q ${midX.toFixed(1)} ${midY.toFixed(1)} ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
     }
     return d;
+}
+
+/**
+ * Erzeugt eine deutlich geschwungene S- oder C-förmige Seeroute mit 2 Wegpunkten
+ */
+function createDramaticSeaRoute(
+    start: Point,
+    end: Point,
+    allIslands: DynamicIsland[],
+    fromIdx: number,
+    toIdx: number,
+): string {
+    const dx = end.x - start.x;
+    const dy = end.y - start.y;
+    const dist = Math.hypot(dx, dy);
+
+    if (dist < 1) return `L ${end.x} ${end.y}`;
+
+    // Senkrechte Normalen
+    const nx = -dy / dist;
+    const ny = dx / dist;
+
+    // Starke Ausbuchtung (deutlich erhöht)
+    const curveSign = fromIdx % 2 === 0 ? 1 : -1;
+    const maxBulge = Math.min(dist * 0.65, 140) * curveSign;
+
+    // 2 Zwischenpunkte für eine nautische S- bzw. Schleifenkurve
+    let wp1: Point = {
+        x: start.x + dx * 0.3 + nx * maxBulge,
+        y: start.y + dy * 0.3 + ny * maxBulge,
+    };
+
+    let wp2: Point = {
+        x: start.x + dx * 0.7 + nx * (maxBulge * 0.5),
+        y: start.y + dy * 0.7 + ny * (maxBulge * 0.5),
+    };
+
+    // Kollisionsprüfung & Abstoßung an allen Inseln
+    [wp1, wp2].forEach((wp) => {
+        allIslands.forEach((island, idx) => {
+            if (idx !== fromIdx && idx !== toIdx) {
+                const safeRadius =
+                    Math.max(island.radiusX, island.radiusY) + 45;
+                const dToIsland = Math.hypot(
+                    wp.x - island.center.x,
+                    wp.y - island.center.y,
+                );
+
+                if (dToIsland < safeRadius) {
+                    const pushFactor = (safeRadius - dToIsland) * 1.5;
+                    wp.x +=
+                        ((wp.x - island.center.x) / (dToIsland || 1)) *
+                        pushFactor;
+                    wp.y +=
+                        ((wp.y - island.center.y) / (dToIsland || 1)) *
+                        pushFactor;
+                }
+            }
+        });
+    });
+
+    // Zusammengesetzte kubische Kurve über die Wegpunkte
+    return ` C ${wp1.x.toFixed(1)} ${wp1.y.toFixed(1)}, ${wp2.x.toFixed(1)} ${wp2.y.toFixed(1)}, ${end.x.toFixed(1)} ${end.y.toFixed(1)}`;
 }

@@ -6,31 +6,24 @@
         "events": [
             {
                 "id": "mo-1",
-                "title": "Begrüßung der Leichtmatrosen",
-                "time": "10:00 - 12:00",
-                "location": "Audimax",
-                "description": "Feierliche Begrüßung aller Erstsemester durch die Fachschaft & Studiendekane."
-            },
-            {
-                "id": "mo-2",
-                "title": "Kaper-Rallye über das Deck",
+                "title": "Kennenlernspiele",
                 "time": "13:00 - 16:00",
-                "location": "Campus-Wiese",
-                "description": "Erkundungstour über den Campus: Finde Bibliothek, Mensa und das Fachschaftsbüro."
+                "location": "z10",
+                "description": ""
             },
             {
                 "id": "mo-3",
-                "title": "Schiffszwieback & Brause",
+                "title": "Essen im Vogelbräu",
                 "time": "16:30 - 18:30",
-                "location": "Fachschaftsgarten",
-                "description": "Kaffee, Kuchen und Kennenlernen der Tutoren."
+                "location": "Vogelbräu",
+                "description": "Yammy"
             },
             {
                 "id": "mo-4",
-                "title": "Käpt'ns Willkommenstrunk",
+                "title": "Bartour",
                 "time": "19:30 - Open End",
-                "location": "Studentenkeller",
-                "description": "Erstes lockeres Beisammensein mit Musik und kühlen Getränken."
+                "location": "Treffpunkt: Vogelbräu",
+                "description": ""
             }
         ]
     },

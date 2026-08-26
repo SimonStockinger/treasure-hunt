@@ -29,3 +29,5 @@ export interface MapOptions {
     height: number;
     theme?: "parchment" | "night" | "treasure";
 }
+
+export type MapOrientation = "horizontal" | "vertical";

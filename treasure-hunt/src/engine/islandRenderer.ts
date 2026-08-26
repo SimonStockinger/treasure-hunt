@@ -40,27 +40,38 @@ export function renderArchipelagoIsland(
           .map((event, eIdx) => {
               const pt = eventPoints[eIdx] || center;
               const isActive = isCurrentDay && event.id === activeEventId;
-              return renderEventStation(event, pt.x, pt.y, center.x, isActive);
+              return renderEventStation(
+                  event,
+                  pt.x,
+                  pt.y,
+                  center.x,
+                  isActive,
+                  dayData.day,
+              );
           })
           .join("")}
     </g>
   `;
 }
+
 function renderEventStation(
     event: MapEvent,
     x: number,
     y: number,
     centerX: number,
     isActive: boolean,
+    dayKey: string,
 ): string {
     const alignLeft = x > centerX;
     const boxX = alignLeft ? 12 : -140;
 
     return `
-    <!-- Feste Positionierung auf der Insel -->
-    <g transform="translate(${x}, ${y})">
-      <!-- Innere Gruppe für Animation & Hover -->
-      <g class="event-node ${isActive ? "is-current-active" : ""}">
+    <g transform="translate(${x}, ${y})"
+       class="event-node ${isActive ? "is-current-active" : ""}"
+       data-event-id="${event.id}"
+       data-day-key="${dayKey}"
+       data-day="${dayKey}">
+      <g class="event-node-inner">
         <!-- Wegpunkt / Anker-Pin -->
         <circle cx="0" cy="0" r="${isActive ? "8" : "5"}"
                 fill="${isActive ? "#a71d1d" : "#4e342e"}"
@@ -74,7 +85,6 @@ function renderEventStation(
                 stroke-width="${isActive ? "2.5" : "1.2"}"
                 filter="drop-shadow(1px 3px ${isActive ? "8px rgba(167, 29, 29, 0.45)" : "4px rgba(0,0,0,0.2)"})" />
 
-          <!-- Rotes "X" nur auf dem aktiven Event -->
           ${
               isActive
                   ? `
@@ -86,12 +96,9 @@ function renderEventStation(
                   : ""
           }
 
-          <!-- Uhrzeit mit Anker -->
           <text x="8" y="14" font-size="10" font-weight="bold" fill="${isActive ? "#a71d1d" : "#607d8b"}">
             ⚓ ${event.time || "Ganztägig"}
           </text>
-
-          <!-- Titel -->
           <text x="8" y="30" font-size="11" font-weight="900" fill="${isActive ? "#8b1e0f" : "#1f140e"}">
             ${event.title.length > 13 ? event.title.substring(0, 12) + "…" : event.title}
           </text>
