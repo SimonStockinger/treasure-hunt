@@ -140,3 +140,35 @@ export function renderTerrainFeature(
       `;
     }
 }
+
+export function renderDockedShip(pos: Point): string {
+    return `
+    <!-- Äußere Gruppe: Feste Position auf der Karte -->
+    <g transform="translate(${pos.x - 25}, ${pos.y + 15})">
+      <!-- Innere Gruppe: Bekommt die CSS-Animation -->
+      <g class="docked-flagship-bob" scale(1.1)>
+        <!-- Wellen-Gischt am Rumpf -->
+        <path d="M -15 14 Q 0 18 15 14 Q 30 18 45 14" fill="none" stroke="#ffffff" stroke-width="1.8" opacity="0.65" />
+
+        <!-- Schiffsrumpf -->
+        <path d="M -8 2 L 36 2 Q 30 16 10 16 L -4 16 Z" fill="#3e2723" stroke="#1f140e" stroke-width="2" />
+
+        <!-- Mast & Rah -->
+        <line x1="14" y1="2" x2="14" y2="-28" stroke="#1f140e" stroke-width="2.5" />
+        <line x1="2" y1="-14" x2="26" y2="-14" stroke="#1f140e" stroke-width="1.5" />
+
+        <!-- Gebauschtes Rah-Segel -->
+        <path d="M 3 -25 Q 14 -18 3 -12 L 25 -12 Q 14 -18 25 -25 Z" fill="#f5f0dc" stroke="#2b1704" stroke-width="1.2" />
+
+        <!-- Piratenflagge (Jolly Roger) -->
+        <polygon points="14,-28 2,-23 14,-18" fill="#1a1a1a" />
+        <circle cx="9" cy="-23" r="1.5" fill="#fdfbf7" />
+
+        <!-- Ankerkette ins Wasser -->
+        <line x1="-6" y1="12" x2="-16" y2="24" stroke="#2b1704" stroke-width="1.5" stroke-dasharray="2,2" />
+        <!-- Anker-Icon -->
+        <text x="-22" y="32" font-size="14" fill="#1f140e">⚓</text>
+      </g>
+    </g>
+  `;
+}

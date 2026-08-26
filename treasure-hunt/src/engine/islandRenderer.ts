@@ -1,188 +1,101 @@
-import type { DayData, Point, MapEvent } from "../types";
-import { generateOrganicIsland } from "./islandShape";
+import type { DynamicIsland } from "./archipelagoLayout";
+import type { MapEvent } from "../types";
+import { generateCoastline } from "./pirateArtRenderer";
+import { renderTerrainFeature } from "./terrainRenderer";
 
-export interface IslandSlot {
-    dayData: DayData;
-    index: number;
-    center: Point;
-    width: number;
-    height: number;
-}
+export function renderArchipelagoIsland(
+    island: DynamicIsland,
+    isCurrentDay: boolean,
+    activeEventId: string | null,
+): string {
+    const { dayData, index, center, radiusX, radiusY, eventPoints } = island;
+    const seed = (index + 1) * 47;
 
-/**
- * Verteilt die 7 Inseln auf dem 1400x850 Kartenausschnitt
- */
-export function layoutIslands(days: DayData[]): IslandSlot[] {
-    const weekKeys = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
-    const colWidth = 165;
-    const startX = 110;
-    const gapX = 28;
-
-    return weekKeys.map((key, index) => {
-        const dayData = days.find((d) => d.day === key) || {
-            day: key as any,
-            label: key,
-            events: [],
-        };
-
-        const eventCount = Math.max(dayData.events.length, 1);
-        // Insel wird höher bei mehr Events
-        const islandHeight = 160 + eventCount * 85;
-        const islandWidth = colWidth;
-
-        // Leicht versetzte Y-Höhen für einen abenteuerlichen Archipel-Look
-        const yOffsets = [0, 25, -15, 30, -10, 20, -5];
-        const centerY = 130 + islandHeight / 2 + yOffsets[index];
-        const centerX = startX + index * (colWidth + gapX);
-
-        return {
-            dayData,
-            index,
-            center: { x: centerX, y: centerY },
-            width: islandWidth,
-            height: islandHeight,
-        };
-    });
-}
-
-/**
- * Rendert eine einzelne organische Insel mit ihren Event-Stationen
- */
-export function renderIsland(slot: IslandSlot): string {
-    const { dayData, index, center, width, height } = slot;
-    const seed = (index + 1) * 31;
-    const hasEvents = dayData.events.length > 0;
-    const hasMain = dayData.events.some((e) => e.isMainEvent);
-
-    // Farben für Sandstrand, Flachwasser und Inselfläche
-    const landColor = hasMain
-        ? "#8f9f69"
-        : index % 2 === 0
-          ? "#b29d6c"
-          : "#a2b377";
-    const beachColor = "#d9c79e";
-    const shallowWaterColor = "#81a9a2";
-
-    // 1. Küsten-Ebenen
-    const waterRing = generateOrganicIsland(center, width, height, seed, 20);
-    const beach = generateOrganicIsland(center, width, height, seed, 8);
-    const land = generateOrganicIsland(center, width, height, seed, 0);
-
-    // 2. Start-Y für die Events innerhalb der Insel
-    const topY = center.y - height / 2 + 45;
+    const reefRing = generateCoastline(center, radiusX, radiusY, seed, 22);
+    const sandCoast = generateCoastline(center, radiusX, radiusY, seed, 10);
+    const land = generateCoastline(center, radiusX, radiusY, seed, 0);
 
     return `
-    <g class="island-node" data-day="${dayData.day}">
-      <!-- Flachwasser-Gischt & Strand -->
-      <path d="${waterRing}" fill="${shallowWaterColor}" opacity="0.35" />
-      <path d="${beach}" fill="${beachColor}" opacity="0.75" />
+    <g class="island-group ${isCurrentDay ? "active-today" : ""}" data-day="${dayData.day}">
+      <!-- Küsten-Ebenen -->
+      <path d="${reefRing}" fill="none" stroke="#6d4c32" stroke-width="1" stroke-dasharray="3,3" opacity="0.45" />
+      <path d="${sandCoast}" fill="#dfca9e" stroke="#5d4037" stroke-width="1.2" opacity="0.85" />
+      <path d="${land}" fill="${isCurrentDay ? "#9bb37d" : "#caba94"}" stroke="#3e2723" stroke-width="${isCurrentDay ? "3" : "2"}" />
 
-      <!-- Haupt-Landmasse -->
-      <path d="${land}" fill="${landColor}" stroke="#4e3524" stroke-width="2" />
-
-      <!-- Insel-Name als Holz-Banner / Flagge -->
-      <g transform="translate(${center.x}, ${center.y - height / 2 + 20})">
-        <rect x="-65" y="-14" width="130" height="24" rx="4" fill="#3e2723" stroke="#23140f" stroke-width="1.5"/>
-        <text x="0" y="3" text-anchor="middle" font-size="12" font-weight="900" fill="#f5ecd7" letter-spacing="1">
-          ${dayData.label.toUpperCase()}
+      <!-- Insel-Banner -->
+      <g transform="translate(${center.x}, ${center.y - radiusY - 14})">
+        <path d="M -70 -12 L 70 -12 L 60 12 L -60 12 Z" fill="${isCurrentDay ? "#8b261b" : "#2d1c13"}" stroke="#1a0f0a" stroke-width="1.5" />
+        <text x="0" y="5" text-anchor="middle" font-size="12" font-weight="900" fill="#f4ebd9" letter-spacing="1">
+          ${dayData.label.toUpperCase()} ${isCurrentDay ? "📍" : ""}
         </text>
       </g>
 
-      <!-- Inland-Pfad (Verbindung der Events) -->
-      ${
-          hasEvents && dayData.events.length > 1
-              ? `
-        <line x1="${center.x}" y1="${topY + 15}"
-              x2="${center.x}" y2="${topY + (dayData.events.length - 1) * 85 + 15}"
-              stroke="#5c4033" stroke-width="2" stroke-dasharray="3,3" opacity="0.7" />
-      `
-              : ""
-      }
+      <!-- Terrain-Icon -->
+      <g transform="translate(${center.x + radiusX * 0.45}, ${center.y - radiusY * 0.3}) scale(0.85)">
+        ${renderTerrainFeature({ x: 0, y: 0 }, dayData.terrain || (index === 6 ? "volcano" : "jungle"))}
+      </g>
 
-      <!-- Events als Stationen auf der Insel -->
-      ${
-          !hasEvents
-              ? `
-        <g transform="translate(${center.x}, ${center.y + 10})">
-          <text x="0" y="0" text-anchor="middle" font-size="12" font-style="italic" fill="#3e2723" opacity="0.8">
-            Unentdeckte Bucht
-          </text>
-          <text x="0" y="16" text-anchor="middle" font-size="10" fill="#5c4033" opacity="0.6">
-            (Keine Termine)
-          </text>
-        </g>
-      `
-              : dayData.events
-                    .map((event, eIdx) => {
-                        const eventY = topY + eIdx * 85;
-                        return renderEventStation(event, center.x, eventY);
-                    })
-                    .join("")
-      }
-
-      <!-- Großes Schatz-X bei Hauptevent -->
-      ${
-          hasMain
-              ? `
-        <text x="${center.x + width * 0.28}" y="${center.y + height * 0.35}"
-              font-size="34" font-weight="900" fill="#a71d1d" text-anchor="middle" opacity="0.9">✕</text>
-      `
-              : ""
-      }
+      <!-- Events -->
+      ${dayData.events
+          .map((event, eIdx) => {
+              const pt = eventPoints[eIdx] || center;
+              const isActive = isCurrentDay && event.id === activeEventId;
+              return renderEventStation(event, pt.x, pt.y, center.x, isActive);
+          })
+          .join("")}
     </g>
   `;
 }
-
-/**
- * Rendert eine einzelne Event-Station (Pergament-Schild & Wegpunkt)
- */
-function renderEventStation(event: MapEvent, x: number, y: number): string {
-    const isMain = event.isMainEvent;
-    const badgeFill = isMain ? "#fdf0cd" : "#f9f4e8";
-    const borderColor = isMain ? "#9e2a2b" : "#6b4f3b";
+function renderEventStation(
+    event: MapEvent,
+    x: number,
+    y: number,
+    centerX: number,
+    isActive: boolean,
+): string {
+    const alignLeft = x > centerX;
+    const boxX = alignLeft ? 12 : -140;
 
     return `
-    <g class="event-station" transform="translate(${x}, ${y})">
-      <!-- Wegpunkt-Marker -->
-      <circle cx="0" cy="0" r="5" fill="${isMain ? "#b71c1c" : "#4e342e"}" stroke="#f9f4e8" stroke-width="1.5" />
+    <!-- Feste Positionierung auf der Insel -->
+    <g transform="translate(${x}, ${y})">
+      <!-- Innere Gruppe für Animation & Hover -->
+      <g class="event-node ${isActive ? "is-current-active" : ""}">
+        <!-- Wegpunkt / Anker-Pin -->
+        <circle cx="0" cy="0" r="${isActive ? "8" : "5"}"
+                fill="${isActive ? "#a71d1d" : "#4e342e"}"
+                stroke="#f4ebd9" stroke-width="${isActive ? "2.5" : "1.5"}" />
 
-      <!-- Ausklappbares Infoplakat direkt auf der Insel -->
-      <g transform="translate(-65, 10)">
-        <rect width="130" height="62" rx="5"
-              fill="${badgeFill}" stroke="${borderColor}" stroke-width="${isMain ? "2" : "1.2"}"
-              filter="drop-shadow(0 2px 4px rgba(0,0,0,0.15))" />
+        <!-- Ausklappbare Event-Karte -->
+        <g transform="translate(${boxX}, -20)">
+          <rect width="132" height="42" rx="5"
+                fill="${isActive ? "#fffbf0" : "#fcf8ef"}"
+                stroke="${isActive ? "#a71d1d" : "#6d4c32"}"
+                stroke-width="${isActive ? "2.5" : "1.2"}"
+                filter="drop-shadow(1px 3px ${isActive ? "8px rgba(167, 29, 29, 0.45)" : "4px rgba(0,0,0,0.2)"})" />
 
-        <!-- Uhrzeit -->
-        <text x="6" y="14" font-size="9.5" font-weight="bold" fill="${isMain ? "#9e2a2b" : "#6f4e37"}">
-          ⚓ ${event.time || "Ganztägig"}
-        </text>
+          <!-- Rotes "X" nur auf dem aktiven Event -->
+          ${
+              isActive
+                  ? `
+            <g transform="translate(112, 28) scale(1.1)">
+              <text x="1" y="1" font-size="28" font-weight="900" fill="#e8d8ba" text-anchor="middle" opacity="0.9">✕</text>
+              <text x="0" y="0" font-size="28" font-weight="900" fill="#a71d1d" text-anchor="middle">✕</text>
+            </g>
+          `
+                  : ""
+          }
 
-        <!-- Titel -->
-        <text x="6" y="28" font-size="10.5" font-weight="bold" fill="#2b1a09">
-          ${event.title.length > 15 ? event.title.substring(0, 14) + "…" : event.title}
-        </text>
-
-        <!-- Ort -->
-        ${
-            event.location
-                ? `
-          <text x="6" y="42" font-size="9" fill="#543d2b">
-            📍 ${event.location.length > 16 ? event.location.substring(0, 15) + "…" : event.location}
+          <!-- Uhrzeit mit Anker -->
+          <text x="8" y="14" font-size="10" font-weight="bold" fill="${isActive ? "#a71d1d" : "#607d8b"}">
+            ⚓ ${event.time || "Ganztägig"}
           </text>
-        `
-                : ""
-        }
 
-        <!-- Details-Hinweis -->
-        ${
-            event.description
-                ? `
-          <text x="6" y="54" font-size="8" font-style="italic" fill="#8d735e">
-            ${event.description.length > 20 ? event.description.substring(0, 18) + "…" : event.description}
+          <!-- Titel -->
+          <text x="8" y="30" font-size="11" font-weight="900" fill="${isActive ? "#8b1e0f" : "#1f140e"}">
+            ${event.title.length > 13 ? event.title.substring(0, 12) + "…" : event.title}
           </text>
-        `
-                : ""
-        }
+        </g>
       </g>
     </g>
   `;

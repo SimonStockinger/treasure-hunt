@@ -1,7 +1,7 @@
 [
     {
         "day": "Mo",
-        "label": "Montag (Anheuern)",
+        "label": "Montag",
         "terrain": "sandbank",
         "events": [
             {
@@ -36,7 +36,7 @@
     },
     {
         "day": "Di",
-        "label": "Dienstag (Navigation)",
+        "label": "Dienstag",
         "terrain": "jungle",
         "events": [
             {
@@ -71,7 +71,7 @@
     },
     {
         "day": "Mi",
-        "label": "Mittwoch (Hafenstadt)",
+        "label": "Mittwoch",
         "terrain": "fortress",
         "events": [
             {
@@ -100,7 +100,7 @@
     },
     {
         "day": "Do",
-        "label": "Donnerstag (Kräftemessen)",
+        "label": "Donnerstag",
         "terrain": "jungle",
         "events": [
             {
@@ -135,7 +135,7 @@
     },
     {
         "day": "Fr",
-        "label": "Freitag (Götterdämmerung)",
+        "label": "Freitag",
         "terrain": "skull_rock",
         "events": [
             {
@@ -164,7 +164,7 @@
     },
     {
         "day": "Sa",
-        "label": "Samstag (Ausruhen & Erkunden)",
+        "label": "Samstag",
         "terrain": "sandbank",
         "events": [
             {
@@ -173,45 +173,17 @@
                 "time": "12:00 - 14:30",
                 "location": "Wohnheim-Taverne",
                 "description": "Rührei, frischer Kaffee und Erholung von der Kaperfahrt."
-            },
-            {
-                "id": "sa-2",
-                "title": "Erkundung der verborgenen Buchten",
-                "time": "15:00 - 18:00",
-                "location": "See / Rheinhafen",
-                "description": "Gemütlicher Ausflug an den See oder in die Natur mit Wikingerschach und Musik."
-            },
-            {
-                "id": "sa-3",
-                "title": "Lagerfeuer & Seemannsgarn",
-                "time": "19:00 - 23:00",
-                "location": "Feuerstelle am See",
-                "description": "Akustikgitarre, Marshmallows und Geschichten aus dem Unialltag."
             }
         ]
     },
     {
         "day": "So",
-        "label": "Sonntag (Die Schatzkiste)",
+        "label": "Sonntag",
         "terrain": "volcano",
         "events": [
             {
                 "id": "so-1",
-                "title": "Letztes Klar Schiff Machen",
-                "time": "13:00 - 15:00",
-                "location": "Fachschaftsbüro",
-                "description": "Fundbüro, Rückgabe geliehener Ausrüstung und Feedback zur O-Woche."
-            },
-            {
-                "id": "so-2",
-                "title": "Käpt'ns Abschluss-Kaffee",
-                "time": "15:30 - 18:00",
-                "location": "Cafeteria",
-                "description": "Gemeinsamer Wochenausklang mit Tutoren und neuen Freunden."
-            },
-            {
-                "id": "so-3",
-                "title": "Vorbereitung auf Tag 1",
+                "title": "Wandern",
                 "time": "19:00 - 20:30",
                 "location": "Discord / Online",
                 "description": "Letzter Check: Welche Vorlesungen starten Montag um 08:00 Uhr?"
