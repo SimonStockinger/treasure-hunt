@@ -9,7 +9,7 @@
                 "title": "Kennenlernspiele",
                 "time": "13:00 - 16:00",
                 "location": "z10",
-                "description": ""
+                "description": "https://maps.app.goo.gl/hzXJ4TAwE2TeKBtQ7"
             },
             {
                 "id": "mo-3",
@@ -34,30 +34,30 @@
         "events": [
             {
                 "id": "di-1",
-                "title": "Seekarten-Kunde (Stundenplanbau)",
+                "title": "Mensa Brunch",
                 "time": "09:30 - 12:00",
                 "location": "Rechnerpools / Geb. 50.34",
                 "description": "Einführung in das Campus-Portal, Kursbelegung und Prüfungsordnung."
             },
             {
                 "id": "di-2",
-                "title": "Proviant fassen (Mensa-Crashkurs)",
+                "title": "FBI",
                 "time": "12:00 - 13:30",
-                "location": "Zentralmensa",
+                "location": "Audimax, Treffpunkt: z10",
                 "description": "Gemeinsames Mittagessen und Aufladen der Campuskarten."
             },
             {
                 "id": "di-3",
-                "title": "Knotenschule (IT-Services & VPN)",
+                "title": "Abendessen",
                 "time": "14:00 - 16:00",
-                "location": "Seminarraum 101",
+                "location": "z10",
                 "description": "Einrichten von Eduroam, GitLab, Uni-Mail und VPN-Zugang."
             },
             {
                 "id": "di-4",
                 "title": "Spieleabend in der Taverne",
                 "time": "19:00 - 23:00",
-                "location": "Seminarraum-Trakt",
+                "location": "z10",
                 "description": "Brettspiele, Pen & Paper, Werwölfe und Mario Kart."
             }
         ]
@@ -69,14 +69,14 @@
         "events": [
             {
                 "id": "mi-1",
-                "title": "Orientierung auf hoher See (Fragerunde)",
+                "title": "Frühstück",
                 "time": "10:30 - 12:00",
-                "location": "Hörsaal B",
+                "location": "z10",
                 "description": "Tipps von höheren Semestern: Altklausuren, Praktika und Überleben im 1. Semester."
             },
             {
                 "id": "mi-2",
-                "title": "Stadtrallye: Die Suche nach dem Schatz",
+                "title": "Olympia",
                 "time": "13:30 - 18:00",
                 "location": "Marktplatz (Treffpunkt)",
                 "description": "Stationen-Rallye durch die Innenstadt mit lustigen Mini-Spielen & Quizfragen.",
@@ -84,9 +84,9 @@
             },
             {
                 "id": "mi-3",
-                "title": "Kneipen-Kaperfahrt",
+                "title": "Cocktailabend",
                 "time": "19:30 - Open End",
-                "location": "Innenstadt",
+                "location": "HaDiKo, K4-Bar",
                 "description": "Geführte Kneipentour in Kleingruppen durch die beliebtesten Studentenkneipen."
             }
         ]
@@ -98,14 +98,14 @@
         "events": [
             {
                 "id": "do-1",
-                "title": "Mathe-Brücke & Logik-Planke",
+                "title": "Frühstück",
                 "time": "10:00 - 12:30",
                 "location": "Hörsaal A",
                 "description": "Vorschau auf die ersten Vorlesungen und Übungsblätter."
             },
             {
                 "id": "do-2",
-                "title": "Flunkyball-Meisterschaft der Meere",
+                "title": "O-Really",
                 "time": "14:00 - 17:30",
                 "location": "Schlosspark / Uniwiese",
                 "description": "Traditionelles Turnier der Erstsemester-Gruppen um den goldenen Pokal."
@@ -119,9 +119,9 @@
             },
             {
                 "id": "do-4",
-                "title": "Freiluft-Kino unter den Sternen",
+                "title": "Grillen",
                 "time": "21:00 - 23:30",
-                "location": "Innenhof",
+                "location": "HaDiKo, K6-Bar",
                 "description": "Filmvorführung von Fluch der Karibik mit Popcorn."
             }
         ]
@@ -162,7 +162,7 @@
         "events": [
             {
                 "id": "sa-1",
-                "title": "Katerfrühstück im Hafencafé",
+                "title": "Minderheiten-Nachmittag",
                 "time": "12:00 - 14:30",
                 "location": "Wohnheim-Taverne",
                 "description": "Rührei, frischer Kaffee und Erholung von der Kaperfahrt."
@@ -178,7 +178,7 @@
                 "id": "so-1",
                 "title": "Wandern",
                 "time": "19:00 - 20:30",
-                "location": "Discord / Online",
+                "location": "Wald",
                 "description": "Letzter Check: Welche Vorlesungen starten Montag um 08:00 Uhr?"
             }
         ]

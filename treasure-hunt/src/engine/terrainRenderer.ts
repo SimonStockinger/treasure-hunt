@@ -70,11 +70,9 @@ export function renderSeaMonster(position: Point = { x: 800, y: 220 }): string {
 export function renderShip(position: Point = { x: 300, y: 300 }): string {
     return `
     <g class="ship" transform="translate(${position.x}, ${position.y}) scale(0.85)" opacity="0.75">
-      <!-- Schiffsrumpf -->
       <path d="M -20 5 L 20 5 Q 16 16 -5 16 L -16 16 Z" fill="#4a2e18" stroke="#2b1704" stroke-width="1.5" />
       <!-- Mast & Rah -->
       <line x1="0" y1="5" x2="0" y2="-22" stroke="#2b1704" stroke-width="2" />
-      <!-- Segel -->
       <path d="M 0 -20 Q 12 -13 0 -5 Z" fill="#fdfbf7" stroke="#2b1704" stroke-width="1.2" />
       <!-- Piratenflagge (Jolly Roger) -->
       <polygon points="0,-22 -7,-18 0,-15" fill="#1a1a1a" />
@@ -127,7 +125,6 @@ export function renderTerrainFeature(
         case "jungle":
         case "sandbank":
         default:
-            // Zwei kleine Palmen
             return `
         <g transform="translate(${center.x}, ${center.y - 4})">
           <!-- Stamm -->
@@ -141,33 +138,30 @@ export function renderTerrainFeature(
     }
 }
 
-export function renderDockedShip(pos: Point): string {
+export function renderDockedShip(
+    pos: Point,
+    shipSvgUrl: string = "/public/assets/pirate-ship-svgrepo-com.svg",
+    size: { width: number; height: number } = { width: 64, height: 64 },
+): string {
+    const offsetX = -(size.width / 2);
+    const offsetY = -(size.height * 0.75);
+
     return `
-    <!-- Äußere Gruppe: Feste Position auf der Karte -->
-    <g transform="translate(${pos.x - 25}, ${pos.y + 15})">
-      <!-- Innere Gruppe: Bekommt die CSS-Animation -->
-      <g class="docked-flagship-bob" scale(1.1)>
-        <!-- Wellen-Gischt am Rumpf -->
-        <path d="M -15 14 Q 0 18 15 14 Q 30 18 45 14" fill="none" stroke="#ffffff" stroke-width="1.8" opacity="0.65" />
+    <g transform="translate(${pos.x}, ${pos.y})">
+      <g class="docked-flagship-bob">
+        <!-- Wellengischt unter dem Rumpf -->
+        <path d="M -20 10 Q 0 16 20 10 Q 35 15 45 10" fill="none" stroke="#ffffff" stroke-width="1.8" opacity="0.65" />
 
-        <!-- Schiffsrumpf -->
-        <path d="M -8 2 L 36 2 Q 30 16 10 16 L -4 16 Z" fill="#3e2723" stroke="#1f140e" stroke-width="2" />
-
-        <!-- Mast & Rah -->
-        <line x1="14" y1="2" x2="14" y2="-28" stroke="#1f140e" stroke-width="2.5" />
-        <line x1="2" y1="-14" x2="26" y2="-14" stroke="#1f140e" stroke-width="1.5" />
-
-        <!-- Gebauschtes Rah-Segel -->
-        <path d="M 3 -25 Q 14 -18 3 -12 L 25 -12 Q 14 -18 25 -25 Z" fill="#f5f0dc" stroke="#2b1704" stroke-width="1.2" />
-
-        <!-- Piratenflagge (Jolly Roger) -->
-        <polygon points="14,-28 2,-23 14,-18" fill="#1a1a1a" />
-        <circle cx="9" cy="-23" r="1.5" fill="#fdfbf7" />
-
-        <!-- Ankerkette ins Wasser -->
-        <line x1="-6" y1="12" x2="-16" y2="24" stroke="#2b1704" stroke-width="1.5" stroke-dasharray="2,2" />
-        <!-- Anker-Icon -->
-        <text x="-22" y="32" font-size="14" fill="#1f140e">⚓</text>
+        <image
+          href="${shipSvgUrl}"
+          x="${offsetX}"
+          y="${offsetY}"
+          width="${size.width}"
+          height="${size.height}"
+          preserveAspectRatio="xMidYMid meet"
+        />
+        <line x1="-12" y1="6" x2="-22" y2="20" stroke="#2b1704" stroke-width="1.5" stroke-dasharray="2,2" />
+        <text x="-28" y="28" font-size="14" fill="#1f140e">⚓</text>
       </g>
     </g>
   `;

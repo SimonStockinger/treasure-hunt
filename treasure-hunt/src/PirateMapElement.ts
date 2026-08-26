@@ -62,7 +62,6 @@ export class PirateMapElement extends HTMLElement {
         if (explicit === "horizontal" || explicit === "vertical") {
             return explicit;
         }
-        // Auto-Modus: Unter 768px Breite wird vertikaler Mobile-Modus aktiv
         const width = this.getBoundingClientRect().width || window.innerWidth;
         return width < 800 ? "vertical" : "horizontal";
     }
@@ -106,7 +105,7 @@ export class PirateMapElement extends HTMLElement {
         height: auto;
       }
 
-      /* Wichtig: Hintergrund ignoriert Mausinteraktionen */
+      /* Background ignores mouse interaction */
       .map-bg, .map-deko, .rhumb-line {
         pointer-events: none;
       }
