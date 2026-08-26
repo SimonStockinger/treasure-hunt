@@ -1,0 +1,221 @@
+[
+    {
+        "day": "Mo",
+        "label": "Montag (Anheuern)",
+        "terrain": "sandbank",
+        "events": [
+            {
+                "id": "mo-1",
+                "title": "Begrüßung der Leichtmatrosen",
+                "time": "10:00 - 12:00",
+                "location": "Audimax",
+                "description": "Feierliche Begrüßung aller Erstsemester durch die Fachschaft & Studiendekane."
+            },
+            {
+                "id": "mo-2",
+                "title": "Kaper-Rallye über das Deck",
+                "time": "13:00 - 16:00",
+                "location": "Campus-Wiese",
+                "description": "Erkundungstour über den Campus: Finde Bibliothek, Mensa und das Fachschaftsbüro."
+            },
+            {
+                "id": "mo-3",
+                "title": "Schiffszwieback & Brause",
+                "time": "16:30 - 18:30",
+                "location": "Fachschaftsgarten",
+                "description": "Kaffee, Kuchen und Kennenlernen der Tutoren."
+            },
+            {
+                "id": "mo-4",
+                "title": "Käpt'ns Willkommenstrunk",
+                "time": "19:30 - Open End",
+                "location": "Studentenkeller",
+                "description": "Erstes lockeres Beisammensein mit Musik und kühlen Getränken."
+            }
+        ]
+    },
+    {
+        "day": "Di",
+        "label": "Dienstag (Navigation)",
+        "terrain": "jungle",
+        "events": [
+            {
+                "id": "di-1",
+                "title": "Seekarten-Kunde (Stundenplanbau)",
+                "time": "09:30 - 12:00",
+                "location": "Rechnerpools / Geb. 50.34",
+                "description": "Einführung in das Campus-Portal, Kursbelegung und Prüfungsordnung."
+            },
+            {
+                "id": "di-2",
+                "title": "Proviant fassen (Mensa-Crashkurs)",
+                "time": "12:00 - 13:30",
+                "location": "Zentralmensa",
+                "description": "Gemeinsames Mittagessen und Aufladen der Campuskarten."
+            },
+            {
+                "id": "di-3",
+                "title": "Knotenschule (IT-Services & VPN)",
+                "time": "14:00 - 16:00",
+                "location": "Seminarraum 101",
+                "description": "Einrichten von Eduroam, GitLab, Uni-Mail und VPN-Zugang."
+            },
+            {
+                "id": "di-4",
+                "title": "Spieleabend in der Taverne",
+                "time": "19:00 - 23:00",
+                "location": "Seminarraum-Trakt",
+                "description": "Brettspiele, Pen & Paper, Werwölfe und Mario Kart."
+            }
+        ]
+    },
+    {
+        "day": "Mi",
+        "label": "Mittwoch (Hafenstadt)",
+        "terrain": "fortress",
+        "events": [
+            {
+                "id": "mi-1",
+                "title": "Orientierung auf hoher See (Fragerunde)",
+                "time": "10:30 - 12:00",
+                "location": "Hörsaal B",
+                "description": "Tipps von höheren Semestern: Altklausuren, Praktika und Überleben im 1. Semester."
+            },
+            {
+                "id": "mi-2",
+                "title": "Stadtrallye: Die Suche nach dem Schatz",
+                "time": "13:30 - 18:00",
+                "location": "Marktplatz (Treffpunkt)",
+                "description": "Stationen-Rallye durch die Innenstadt mit lustigen Mini-Spielen & Quizfragen.",
+                "isMainEvent": true
+            },
+            {
+                "id": "mi-3",
+                "title": "Kneipen-Kaperfahrt",
+                "time": "19:30 - Open End",
+                "location": "Innenstadt",
+                "description": "Geführte Kneipentour in Kleingruppen durch die beliebtesten Studentenkneipen."
+            }
+        ]
+    },
+    {
+        "day": "Do",
+        "label": "Donnerstag (Kräftemessen)",
+        "terrain": "jungle",
+        "events": [
+            {
+                "id": "do-1",
+                "title": "Mathe-Brücke & Logik-Planke",
+                "time": "10:00 - 12:30",
+                "location": "Hörsaal A",
+                "description": "Vorschau auf die ersten Vorlesungen und Übungsblätter."
+            },
+            {
+                "id": "do-2",
+                "title": "Flunkyball-Meisterschaft der Meere",
+                "time": "14:00 - 17:30",
+                "location": "Schlosspark / Uniwiese",
+                "description": "Traditionelles Turnier der Erstsemester-Gruppen um den goldenen Pokal."
+            },
+            {
+                "id": "do-3",
+                "title": "Smutjes Barbecue",
+                "time": "18:00 - 20:30",
+                "location": "Campus-Grillplatz",
+                "description": "Vegetarisches & Fleisch-Grillen für alle hungrigen Matrosen."
+            },
+            {
+                "id": "do-4",
+                "title": "Freiluft-Kino unter den Sternen",
+                "time": "21:00 - 23:30",
+                "location": "Innenhof",
+                "description": "Filmvorführung von Fluch der Karibik mit Popcorn."
+            }
+        ]
+    },
+    {
+        "day": "Fr",
+        "label": "Freitag (Götterdämmerung)",
+        "terrain": "skull_rock",
+        "events": [
+            {
+                "id": "fr-1",
+                "title": "Treffen der Hochschulgruppen-Gilden",
+                "time": "11:00 - 14:00",
+                "location": "Foyer Geb. 10.11",
+                "description": "Markt der Möglichkeiten: Lerne Initiativen, Musikgruppen und Sportangebote kennen."
+            },
+            {
+                "id": "fr-2",
+                "title": "Schiffs-Tuning (DIY-Workshop)",
+                "time": "14:30 - 17:00",
+                "location": "Makerspace / Werkstatt",
+                "description": "Basteln, Löten und Einführung in den 3D-Druck der Universität."
+            },
+            {
+                "id": "fr-3",
+                "title": "Die Große O-Phasen-Kaperfahrt (Ersti-Party)",
+                "time": "21:00 - 05:00",
+                "location": "Festung / Mensa-Club",
+                "description": "Das absolute Highlight der Woche: 3 Floors, Live-DJs und Piraten-Deko.",
+                "isMainEvent": true
+            }
+        ]
+    },
+    {
+        "day": "Sa",
+        "label": "Samstag (Ausruhen & Erkunden)",
+        "terrain": "sandbank",
+        "events": [
+            {
+                "id": "sa-1",
+                "title": "Katerfrühstück im Hafencafé",
+                "time": "12:00 - 14:30",
+                "location": "Wohnheim-Taverne",
+                "description": "Rührei, frischer Kaffee und Erholung von der Kaperfahrt."
+            },
+            {
+                "id": "sa-2",
+                "title": "Erkundung der verborgenen Buchten",
+                "time": "15:00 - 18:00",
+                "location": "See / Rheinhafen",
+                "description": "Gemütlicher Ausflug an den See oder in die Natur mit Wikingerschach und Musik."
+            },
+            {
+                "id": "sa-3",
+                "title": "Lagerfeuer & Seemannsgarn",
+                "time": "19:00 - 23:00",
+                "location": "Feuerstelle am See",
+                "description": "Akustikgitarre, Marshmallows und Geschichten aus dem Unialltag."
+            }
+        ]
+    },
+    {
+        "day": "So",
+        "label": "Sonntag (Die Schatzkiste)",
+        "terrain": "volcano",
+        "events": [
+            {
+                "id": "so-1",
+                "title": "Letztes Klar Schiff Machen",
+                "time": "13:00 - 15:00",
+                "location": "Fachschaftsbüro",
+                "description": "Fundbüro, Rückgabe geliehener Ausrüstung und Feedback zur O-Woche."
+            },
+            {
+                "id": "so-2",
+                "title": "Käpt'ns Abschluss-Kaffee",
+                "time": "15:30 - 18:00",
+                "location": "Cafeteria",
+                "description": "Gemeinsamer Wochenausklang mit Tutoren und neuen Freunden."
+            },
+            {
+                "id": "so-3",
+                "title": "Vorbereitung auf Tag 1",
+                "time": "19:00 - 20:30",
+                "location": "Discord / Online",
+                "description": "Letzter Check: Welche Vorlesungen starten Montag um 08:00 Uhr?"
+            }
+        ]
+    }
+]
