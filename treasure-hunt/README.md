@@ -125,6 +125,9 @@ Assets such as SVGs were partially created using LLMs (Gemini, Claude Code).
 - Bag: https://www.svgrepo.com/svg/245918/money-bag-poor
 - Treasure Map: https://www.svgrepo.com/svg/245914/treasure-map
 
+- Swordfish: https://www.svgrepo.com/svg/10999/swordfish
+- Helm: https://www.svgrepo.com/svg/10997/helm
+
 ## License
 
 Copyright (c) Simon Stockinger. See [MIT-LICENSE.txt](LICENSE) for details.
