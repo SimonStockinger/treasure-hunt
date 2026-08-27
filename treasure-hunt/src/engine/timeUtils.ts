@@ -1,4 +1,4 @@
-import type { DayData, MapEvent, WeekDay } from "../types";
+import type { DayData, WeekDay } from "../types";
 
 const DAY_MAP: Record<number, WeekDay> = {
     0: "So",

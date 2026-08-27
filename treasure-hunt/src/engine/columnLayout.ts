@@ -1,4 +1,4 @@
-import type { DayData, Point } from "../types";
+import type { DayData } from "../types";
 
 export interface ColumnLayout {
     dayData: DayData;

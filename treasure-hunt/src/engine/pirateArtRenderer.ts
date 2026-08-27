@@ -1,4 +1,3 @@
-import type { DynamicIsland } from "./archipelagoLayout";
 import type { Point } from "../types";
 
 function pseudoRandom(seed: number) {

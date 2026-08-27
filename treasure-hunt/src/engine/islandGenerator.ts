@@ -1,4 +1,4 @@
-import type { DayData, Point, TerrainType } from "../types";
+import type { DayData, TerrainType } from "../types";
 
 export function getIslandConfig(dayData?: DayData, isLastDay: boolean = false) {
     const eventCount = dayData?.events?.length || 0;
