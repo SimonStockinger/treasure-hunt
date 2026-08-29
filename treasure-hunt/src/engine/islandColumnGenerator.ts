@@ -5,9 +5,6 @@ function pseudoRandom(seed: number) {
     return x - Math.floor(x);
 }
 
-/**
- * Erzeugt einen abgerundeten, organisch ausgefransten Säulen-Pfad (Insel)
- */
 export function createIslandColumnPath(
     col: ColumnLayout,
     offset: number = 0,
@@ -18,7 +15,6 @@ export function createIslandColumnPath(
     const w = col.width + offset * 2;
     const h = col.height + offset * 2;
 
-    // Organische Ecken mit leichten Beulen
     const r = 16;
     const v1 = (pseudoRandom(seed + 1) - 0.5) * 6;
     const v2 = (pseudoRandom(seed + 2) - 0.5) * 6;

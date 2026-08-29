@@ -9,7 +9,7 @@ export function generateSeamlessMasterRoute(islands: DynamicIsland[]): string {
     for (let i = 0; i < islands.length; i++) {
         const current = islands[i];
 
-        // 1. Inland-Trampelpfad
+        // Island Path
         const inlandPoints: Point[] = [current.entryPoint];
         if (current.eventPoints.length > 0) {
             inlandPoints.push(...current.eventPoints);
@@ -25,10 +25,10 @@ export function generateSeamlessMasterRoute(islands: DynamicIsland[]): string {
         }
         segments.push(generateInlandSubPath(inlandPoints));
 
-        // 2. Weite Hochsee-Passage zur nächsten Insel
+        // Sea Path to next island
         if (i < islands.length - 1) {
             const next = islands[i + 1];
-            const seaCurve = createDramaticSeaRoute(
+            const seaCurve = createSlopedSeaRoute(
                 current.exitPoint,
                 next.entryPoint,
                 islands,
@@ -54,10 +54,7 @@ function generateInlandSubPath(pts: Point[]): string {
     return d;
 }
 
-/**
- * Erzeugt eine deutlich geschwungene S- oder C-förmige Seeroute mit 2 Wegpunkten
- */
-function createDramaticSeaRoute(
+function createSlopedSeaRoute(
     start: Point,
     end: Point,
     allIslands: DynamicIsland[],
@@ -70,15 +67,12 @@ function createDramaticSeaRoute(
 
     if (dist < 1) return `L ${end.x} ${end.y}`;
 
-    // Senkrechte Normalen
     const nx = -dy / dist;
     const ny = dx / dist;
 
-    // Starke Ausbuchtung (deutlich erhöht)
     const curveSign = fromIdx % 2 === 0 ? 1 : -1;
     const maxBulge = Math.min(dist * 0.65, 140) * curveSign;
 
-    // 2 Zwischenpunkte für eine nautische S- bzw. Schleifenkurve
     let wp1: Point = {
         x: start.x + dx * 0.3 + nx * maxBulge,
         y: start.y + dy * 0.3 + ny * maxBulge,
@@ -89,7 +83,7 @@ function createDramaticSeaRoute(
         y: start.y + dy * 0.7 + ny * (maxBulge * 0.5),
     };
 
-    // Kollisionsprüfung & Abstoßung an allen Inseln
+    // Collision checking
     [wp1, wp2].forEach((wp) => {
         allIslands.forEach((island, idx) => {
             if (idx !== fromIdx && idx !== toIdx) {
@@ -113,6 +107,6 @@ function createDramaticSeaRoute(
         });
     });
 
-    // Zusammengesetzte kubische Kurve über die Wegpunkte
+    // Return combined curve
     return ` C ${wp1.x.toFixed(1)} ${wp1.y.toFixed(1)}, ${wp2.x.toFixed(1)} ${wp2.y.toFixed(1)}, ${end.x.toFixed(1)} ${end.y.toFixed(1)}`;
 }

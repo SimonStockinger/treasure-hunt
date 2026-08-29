@@ -27,9 +27,6 @@ export function layoutArchipelago(
         : layoutVertical(days);
 }
 
-/**
- * VERTIKAL-MODUS (Mobile / Hochformat 2-Spalten Reißverschluss)
- */
 function layoutVertical(days: DayData[]): ArchipelagoResult {
     const weekKeys = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
     const islands: DynamicIsland[] = [];
@@ -101,9 +98,6 @@ function layoutVertical(days: DayData[]): ArchipelagoResult {
     };
 }
 
-/**
- * HORIZONTAL-MODUS (Desktop / Querformat 2-Reihen Zick-Zack)
- */
 function layoutHorizontal(days: DayData[]): ArchipelagoResult {
     const weekKeys = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
     const islands: DynamicIsland[] = [];
@@ -133,7 +127,6 @@ function layoutHorizontal(days: DayData[]): ArchipelagoResult {
         if (index === 0) {
             currentX = startX + radiusX;
         } else {
-            // Horizontales Aneinander-Schmiegen
             currentX += (prevRadiusX + radiusX) * 0.9;
         }
         prevRadiusX = radiusX;

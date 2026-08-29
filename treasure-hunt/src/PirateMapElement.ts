@@ -314,20 +314,19 @@ export class PirateMapElement extends HTMLElement {
           </filter>
         </defs>
 
-        <!-- Ozean / Hintergrund (mit pointer-events: none) -->
+        <!-- Ocean / Background -->
         <rect class="map-bg" width="${totalWidth}" height="${totalHeight}" fill="#eedcba" filter="url(#paper-grain)" />
         <rect class="map-bg" width="${totalWidth}" height="${totalHeight}" fill="url(#vignette)" style="mix-blend-mode: multiply;" />
 
-        <!-- Deko -->
+        <!-- Decoration -->
         <g class="map-deko">${renderRhumbLines({ x: totalWidth / 2, y: totalHeight / 2 })}</g>
         <g class="map-deko">${renderCompassRose({ x: totalWidth - 90, y: 85 })}</g>
         <g class="map-deko">${renderSeaWaves(wavePoints)}</g>
         <g class="map-deko">${renderSeaMonster({ x: totalWidth - 140, y: totalHeight - 140 })}</g>
 
-        <!-- Schatzpfad -->
         <path class="map-bg" d="${masterRouteD}" fill="none" stroke="#a71d1d" stroke-width="4.5" stroke-dasharray="12, 9" stroke-linecap="round" />
 
-        <!-- Interaktive Inseln & Events -->
+        <!-- Interactive Islands and Events -->
         ${islands
             .map((isl) => {
                 const isToday = isl.dayData.day === currentDayKey;
@@ -339,7 +338,7 @@ export class PirateMapElement extends HTMLElement {
             })
             .join("")}
 
-        <!-- ⚓ Flaggschiff -->
+        <!-- Flaggship -->
         ${renderDockedShip(currentIsland.entryPoint)}
       `;
 

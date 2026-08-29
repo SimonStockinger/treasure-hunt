@@ -8,7 +8,6 @@ export function renderIslandColumn(col: ColumnLayout): string {
     const isLast = col.index === 6;
     const config = getIslandConfig(dayData, isLast);
 
-    // Strand-Rand (größer) & Festland
     const beachPath = createIslandColumnPath(col, 8, col.index * 23);
     const landPath = createIslandColumnPath(col, 0, col.index * 23);
 

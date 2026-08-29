@@ -5,10 +5,6 @@ function pseudoRandom(seed: number) {
     return x - Math.floor(x);
 }
 
-/**
- * Generiert eine organische Insel-Form (Pill/Blob), die sich nach unten streckt,
- * wenn viele Events vorhanden sind.
- */
 export function generateOrganicIsland(
     center: Point,
     width: number,
@@ -21,17 +17,14 @@ export function generateOrganicIsland(
     const cx = center.x;
     const cy = center.y;
 
-    // 12 Kontrollpunkte im Kreis/Oval um das Zentrum mit prozeduralem Rauschen
     const numPoints = 14;
     const points: Point[] = [];
     const angleStep = (Math.PI * 2) / numPoints;
 
     for (let i = 0; i < numPoints; i++) {
         const angle = i * angleStep;
-        // Verzerrung für organische Küstenlinie
         const noise = 0.85 + pseudoRandom(seed + i * 7) * 0.3;
 
-        // Elliptische Ausdehnung
         const rx = Math.cos(angle) * w * noise;
         const ry = Math.sin(angle) * h * noise;
 
@@ -41,7 +34,6 @@ export function generateOrganicIsland(
         });
     }
 
-    // Sanfte kubische Kurve durch alle Punkte schließen
     let d = `M ${points[0].x.toFixed(1)} ${points[0].y.toFixed(1)}`;
     for (let i = 0; i < points.length; i++) {
         const p1 = points[i];

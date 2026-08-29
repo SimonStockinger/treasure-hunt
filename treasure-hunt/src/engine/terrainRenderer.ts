@@ -1,8 +1,5 @@
 import type { Point, TerrainType } from "../types";
 
-/**
- * Zeichnet eine klassische Kompassrose (oben rechts).
- */
 export function renderCompassRose(center: Point = { x: 1080, y: 120 }): string {
     const size = 55;
     return `
@@ -35,9 +32,6 @@ export function renderCompassRose(center: Point = { x: 1080, y: 120 }): string {
   `;
 }
 
-/**
- * Rendert kleine Meeres-Wellenlinien zur Dekoration.
- */
 export function renderSeaWaves(points: Point[]): string {
     return points
         .map(
@@ -49,9 +43,6 @@ export function renderSeaWaves(points: Point[]): string {
         .join("");
 }
 
-/**
- * Rendert das Seeungeheuer (Tentakel / Schlange).
- */
 export function renderSeaMonster(position: Point = { x: 800, y: 220 }): string {
     return `
     <g class="sea-monster" transform="translate(${position.x}, ${position.y})" opacity="0.65">
@@ -64,9 +55,6 @@ export function renderSeaMonster(position: Point = { x: 800, y: 220 }): string {
   `;
 }
 
-/**
- * Rendert ein kleines Piratenschiff auf offener See.
- */
 export function renderShip(position: Point = { x: 300, y: 300 }): string {
     return `
     <g class="ship" transform="translate(${position.x}, ${position.y}) scale(0.85)" opacity="0.75">
@@ -80,9 +68,6 @@ export function renderShip(position: Point = { x: 300, y: 300 }): string {
   `;
 }
 
-/**
- * Rendert spezifische Terrain-Features auf den Inseln (Palmen, Berge, Totenkopf, Vulkan).
- */
 export function renderTerrainFeature(
     center: Point,
     terrain: TerrainType,

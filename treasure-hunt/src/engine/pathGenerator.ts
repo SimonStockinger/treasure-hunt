@@ -6,20 +6,16 @@ export interface DayNode {
     position: Point;
 }
 
-// 7 Wegpunkte auf einer 1200x700 Canvas im Abenteuer-Zickzack
 const BASE_COORDINATES: Point[] = [
-    { x: 150, y: 160 }, // Mo (oben links)
-    { x: 380, y: 140 }, // Di (oben mitte)
-    { x: 620, y: 220 }, // Mi (zentral)
-    { x: 420, y: 400 }, // Do (schleife nach unten links)
-    { x: 220, y: 550 }, // Fr (unten links)
-    { x: 640, y: 560 }, // Sa (unten mitte)
-    { x: 1000, y: 440 }, // So / Finale (rechts - Der Schatz!)
+    { x: 150, y: 160 }, // Mo (top left)
+    { x: 380, y: 140 }, // Di (top mid)
+    { x: 620, y: 220 }, // Mi (central)
+    { x: 420, y: 400 }, // Do (slope bottom left)
+    { x: 220, y: 550 }, // Fr (bottom left)
+    { x: 640, y: 560 }, // Sa (bottom mid)
+    { x: 1000, y: 440 }, // So right
 ];
 
-/**
- * Erzeugt die Koordinaten für alle 7 Tage.
- */
 export function getDayPositions(): DayNode[] {
     const days = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
     return days.map((dayKey, index) => ({
@@ -29,9 +25,6 @@ export function getDayPositions(): DayNode[] {
     }));
 }
 
-/**
- * Verbindet die Punkte mit glatten kubischen Bézier-Kurven (Catmull-Rom -> SVG Path).
- */
 export function generateCurvedPath(points: Point[]): string {
     if (points.length < 2) return "";
 
@@ -43,7 +36,6 @@ export function generateCurvedPath(points: Point[]): string {
         const p2 = points[i + 1];
         const p3 = points[i + 2] || p2;
 
-        // Kontrollpunkte für eine geschmeidige Kurve berechnen
         const cp1x = p1.x + (p2.x - p0.x) / 6;
         const cp1y = p1.y + (p2.y - p0.y) / 6;
         const cp2x = p2.x - (p3.x - p1.x) / 6;

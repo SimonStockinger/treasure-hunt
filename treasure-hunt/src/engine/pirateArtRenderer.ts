@@ -5,9 +5,6 @@ function pseudoRandom(seed: number) {
     return x - Math.floor(x);
 }
 
-/**
- * Organische Insel-Umrisse mit Tiefenlinien
- */
 export function generateCoastline(
     center: Point,
     rx: number,
@@ -40,9 +37,6 @@ export function generateCoastline(
     return d;
 }
 
-/**
- * Navigationslinien (Rhumb Lines) von einer Kompassrose
- */
 export function renderRhumbLines(origin: Point = { x: 800, y: 500 }): string {
     const lines: string[] = [];
     for (let deg = 0; deg < 360; deg += 22.5) {

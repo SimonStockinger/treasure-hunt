@@ -3,7 +3,6 @@ import type { DayData, Point } from "../types";
 export function renderDayPopup(dayData: DayData, pos: Point): string {
     const hasEvents = dayData.events && dayData.events.length > 0;
 
-    // Verschiebung, damit das Popup nicht aus der 1200x700 Viewport-Grenze ragt
     const popupX = Math.min(Math.max(pos.x - 110, 20), 980);
     const popupY = pos.y > 450 ? pos.y - 200 : pos.y + 40;
 

@@ -62,10 +62,8 @@ function renderEventStation(
     dayKey: string,
     eventIndex: number,
 ): string {
-    // Alterniert sauber links und rechts der Achse
     const isRightSide = eventIndex % 2 === 0;
 
-    // Dynamische Breite anhand des längsten Textes
     const titleLen = event.title ? event.title.length : 0;
     const locLen = event.location ? event.location.length + 3 : 0;
     const timeLen = (event.time || "Ganztägig").length + 3;
