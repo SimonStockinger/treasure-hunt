@@ -26,7 +26,7 @@ export function renderArchipelagoIsland(
       <g transform="translate(${center.x}, ${center.y - radiusY - 20})">
         <path d="M -105 -18 L 105 -18 L 88 18 L -88 18 Z" fill="${isCurrentDay ? "#8b261b" : "#2d1c13"}" stroke="#1a0f0a" stroke-width="2.2" />
         <text x="0" y="7" text-anchor="middle" font-size="15" font-weight="900" fill="#f4ebd9" letter-spacing="1.8">
-          ${dayData.label.toUpperCase()} ${isCurrentDay ? "📍" : ""}
+          ${dayData.label.toUpperCase()}
         </text>
       </g>
 
