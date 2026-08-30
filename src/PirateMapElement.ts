@@ -1,6 +1,7 @@
 import { layoutArchipelago } from "./engine/archipelagoLayout";
 import { generateSeamlessMasterRoute } from "./engine/seamlessPath";
 import { renderArchipelagoIsland } from "./engine/islandRenderer";
+
 import { renderRhumbLines } from "./engine/pirateArtRenderer";
 import {
     renderCompassRose,

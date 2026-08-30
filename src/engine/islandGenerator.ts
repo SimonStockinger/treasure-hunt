@@ -5,25 +5,15 @@ export function getIslandConfig(dayData?: DayData, isLastDay: boolean = false) {
     const eventCount = dayData?.events?.length || 0;
     const hasMainEvent = dayData?.events?.some((e) => e.isMainEvent) || false;
 
-    let radius = calculateRadius(eventCount);
     let terrain: TerrainType = dayData?.terrain || pickTerrain();
 
     if (isLastDay) {
         terrain = "treasure";
-    } else if (hasMainEvent) {
-        radius *= 1.1;
     }
-
     const landColor = terrColors[terrain];
     const beachColor = "#c2a679";
 
-    return { radius, landColor, beachColor, hasMainEvent, eventCount, terrain };
-}
-
-function calculateRadius(eventCount: number): number {
-    const baseRadius = 35;
-    const growth = 45;
-    return baseRadius + growth * (1 - Math.pow(0.5, eventCount));
+    return { landColor, beachColor, hasMainEvent, eventCount, terrain };
 }
 
 export function pickTerrain(): TerrainType {

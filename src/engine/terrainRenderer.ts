@@ -134,9 +134,6 @@ export function renderDockedShip(
     return `
     <g transform="translate(${pos.x}, ${pos.y})">
       <g class="docked-flagship-bob">
-        <!-- Wellengischt unter dem Rumpf -->
-        <path d="M -20 10 Q 0 16 20 10 Q 35 15 45 10" fill="none" stroke="#ffffff" stroke-width="1.8" opacity="0.65" />
-
         <image
           href="${shipSvgUrl}"
           x="${offsetX}"
