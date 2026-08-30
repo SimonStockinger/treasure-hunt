@@ -120,6 +120,21 @@ export function renderTerrainFeature(
           <path d="M 4 -8 Q 12 -4 12 2" fill="none" stroke="#2e7d32" stroke-width="1.8" stroke-linecap="round" />
         </g>
       `;
+
+        case "treasure":
+            return `
+            <g class="treashure-chest">
+              <image
+                href="/public/assets/environment/island/chest-treasure-svgrepo-com.svg"
+                x="${center.x - 200}"
+                y="${center.y - 10}"
+                width="${64}"
+                height="${64}"
+                preserveAspectRatio="xMidYMid meet"
+              />
+              <line x1="-12" y1="6" x2="-22" y2="20" stroke="#2b1704" stroke-width="1.5" stroke-dasharray="2,2" />
+              <text x="-28" y="28" font-size="14" fill="#1f140e">⚓</text>
+            </g>`;
     }
 }
 
