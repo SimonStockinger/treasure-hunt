@@ -1,17 +1,22 @@
 import { defineConfig } from "vite";
 
-export default defineConfig({
-    build: {
-        lib: {
-            entry: "./src/main.ts",
-            name: "TreasureMap",
-            fileName: (format) => `treasure-map.${format}.js`,
-            formats: ["es", "umd"],
-        },
-        rollupOptions: {
-            output: {
-                assetFileNames: "treasure-map.[ext]",
-            },
-        },
-    },
+export default defineConfig(({ mode }) => {
+    const isDemo = mode === "demo";
+
+    return {
+        base: "./",
+        build: isDemo
+            ? {
+                  outDir: "dist-demo",
+              }
+            : {
+                  outDir: "dist",
+                  lib: {
+                      entry: "./src/main.ts",
+                      name: "TreasureHunt",
+                      fileName: (format) => `treasure-hunt.${format}.js`,
+                      formats: ["es", "umd"],
+                  },
+              },
+    };
 });
