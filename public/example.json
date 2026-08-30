@@ -23,7 +23,8 @@
                 "title": "Bartour",
                 "time": "19:30 - Open End",
                 "location": "Treffpunkt: Vogelbräu",
-                "description": ""
+                "description": "",
+                "isMainEvent": true
             }
         ]
     },
@@ -41,17 +42,17 @@
             },
             {
                 "id": "di-2",
-                "title": "FBI",
+                "title": "FBI & Campustour",
                 "time": "12:00 - 13:30",
                 "location": "Audimax, Treffpunkt: z10",
-                "description": "Gemeinsames Mittagessen und Aufladen der Campuskarten."
+                "description": "Informationsveranstaltung."
             },
             {
                 "id": "di-3",
                 "title": "Abendessen",
                 "time": "14:00 - 16:00",
                 "location": "z10",
-                "description": "Einrichten von Eduroam, GitLab, Uni-Mail und VPN-Zugang."
+                "description": "Essi."
             },
             {
                 "id": "di-4",
@@ -79,15 +80,15 @@
                 "title": "Olympia",
                 "time": "13:30 - 18:00",
                 "location": "Marktplatz (Treffpunkt)",
-                "description": "Stationen-Rallye durch die Innenstadt mit lustigen Mini-Spielen & Quizfragen.",
-                "isMainEvent": true
+                "description": "Stationen-Rallye durch die Innenstadt mit lustigen Mini-Spielen & Quizfragen."
             },
             {
                 "id": "mi-3",
                 "title": "Cocktailabend",
                 "time": "19:30 - Open End",
                 "location": "HaDiKo, K4-Bar",
-                "description": "Geführte Kneipentour in Kleingruppen durch die beliebtesten Studentenkneipen."
+                "description": "Geführte Kneipentour in Kleingruppen durch die beliebtesten Studentenkneipen.",
+                "isMainEvent": true
             }
         ]
     },
@@ -100,8 +101,8 @@
                 "id": "do-1",
                 "title": "Frühstück",
                 "time": "10:00 - 12:30",
-                "location": "Hörsaal A",
-                "description": "Vorschau auf die ersten Vorlesungen und Übungsblätter."
+                "location": "z10",
+                "description": "Frühes Essi."
             },
             {
                 "id": "do-2",
@@ -112,17 +113,10 @@
             },
             {
                 "id": "do-3",
-                "title": "Smutjes Barbecue",
-                "time": "18:00 - 20:30",
-                "location": "Campus-Grillplatz",
-                "description": "Vegetarisches & Fleisch-Grillen für alle hungrigen Matrosen."
-            },
-            {
-                "id": "do-4",
                 "title": "Grillen",
-                "time": "21:00 - 23:30",
+                "time": "17:00 - Open End",
                 "location": "HaDiKo, K6-Bar",
-                "description": "Filmvorführung von Fluch der Karibik mit Popcorn."
+                "description": "Essi."
             }
         ]
     },
@@ -140,18 +134,25 @@
             },
             {
                 "id": "fr-2",
-                "title": "Schiffs-Tuning (DIY-Workshop)",
+                "title": "Abschlussveranstaltung & Scottland Yard",
                 "time": "14:30 - 17:00",
-                "location": "Makerspace / Werkstatt",
-                "description": "Basteln, Löten und Einführung in den 3D-Druck der Universität."
+                "location": "Audimax",
+                "description": "Basteln, Löten und Einführung in den 3D-Druck der Universität.",
+                "isMainEvent": true
             },
             {
                 "id": "fr-3",
-                "title": "Die Große O-Phasen-Kaperfahrt (Ersti-Party)",
-                "time": "21:00 - 05:00",
+                "title": "Kippe Schnitz",
+                "time": "17:00 - 20:00",
                 "location": "Festung / Mensa-Club",
-                "description": "Das absolute Highlight der Woche: 3 Floors, Live-DJs und Piraten-Deko.",
-                "isMainEvent": true
+                "description": "Das absolute Highlight der Woche: 3 Floors, Live-DJs und Piraten-Deko."
+            },
+            {
+                "id": "fr-3",
+                "title": "Sumpfen im z10",
+                "time": "20:00 - Open End",
+                "location": "z10",
+                "description": "Die Woche Entspannt ausklingen lassen"
             }
         ]
     },
