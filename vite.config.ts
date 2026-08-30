@@ -4,7 +4,7 @@ export default defineConfig(({ mode }) => {
     const isDemo = mode === "demo";
 
     return {
-        base: "./",
+        base: "/treasure-hunt/",
         build: isDemo
             ? {
                   outDir: "dist-demo",
