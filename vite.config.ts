@@ -4,10 +4,10 @@ export default defineConfig(({ mode }) => {
     const isDemo = mode === "demo";
 
     return {
-        base: "/treasure-hunt/",
+        base: isDemo ? "/treasure-hunt/" : "./",
         build: isDemo
             ? {
-                  outDir: "dist-demo",
+                  outDir: "dist-demo", // Builds index.html fot gh-pages
               }
             : {
                   outDir: "dist",

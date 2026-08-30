@@ -9,10 +9,10 @@
         "dist"
     ],
     "scripts": {
-        "dev": "vite",
-        "build": "tsc && vite build",
-        "build:demo": "vite build --mode demo",
-        "preview": "vite preview"
+      "dev": "vite",
+      "build": "vite build",
+      "build:demo": "vite build --mode demo",
+      "preview": "vite preview"
     },
     "devDependencies": {
         "@types/node": "^26.4.0",

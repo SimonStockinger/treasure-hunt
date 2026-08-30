@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy Demo to GitHub Pages
 
 on:
     push:
@@ -21,18 +21,27 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
+
             - uses: pnpm/action-setup@v3
               with:
                   version: 9
+
             - uses: actions/setup-node@v4
               with:
                   node-version: 20
                   cache: "pnpm"
+
             - run: pnpm install
-            - run: pnpm run build
+
+            # Builds Demo
+            - run: pnpm run build:demo
+
             - uses: actions/configure-pages@v5
+
+            # Uploads dist-demo directory
             - uses: actions/upload-pages-artifact@v3
               with:
-                  path: "./dist"
+                  path: "./dist-demo"
+
             - uses: actions/deploy-pages@v4
               id: deployment
