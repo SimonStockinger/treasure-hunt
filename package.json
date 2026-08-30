@@ -1,15 +1,17 @@
 {
-  "name": "treasure-hunt",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "typescript": "~6.0.2",
-    "vite": "^8.2.2"
-  }
+    "name": "treasure-hunt",
+    "version": "1.0.0",
+    "type": "module",
+    "main": "./dist/treasure-hunt.umd.js",
+    "module": "./dist/treasure-hunt.es.js",
+    "types": "./dist/main.d.ts",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "build:demo": "vite build --mode demo",
+        "preview": "vite preview"
+    }
 }

@@ -2,14 +2,18 @@ import type { DynamicIsland } from "./archipelagoLayout";
 import type { MapEvent } from "../types";
 import { generateCoastline } from "./pirateArtRenderer";
 import { renderTerrainFeature } from "./terrainRenderer";
+import { getIslandConfig } from "./islandGenerator";
 
 export function renderArchipelagoIsland(
     island: DynamicIsland,
     isCurrentDay: boolean,
     activeEventId: string | null,
+    isLast: boolean,
 ): string {
     const { dayData, index, center, radiusX, radiusY, eventPoints } = island;
     const seed = (index + 1) * 47;
+
+    const config = getIslandConfig(dayData, isLast);
 
     const reefRing = generateCoastline(center, radiusX, radiusY, seed, 30);
     const sandCoast = generateCoastline(center, radiusX, radiusY, seed, 16);
@@ -17,10 +21,13 @@ export function renderArchipelagoIsland(
 
     return `
     <g class="island-group ${isCurrentDay ? "active-today" : ""}" data-day="${dayData.day}">
-      <!-- Küstenlinien -->
+      <!-- Küstenlinien & Landmasse mit dynamischer Farbe -->
       <path d="${reefRing}" fill="none" stroke="#6d4c32" stroke-width="1.6" stroke-dasharray="4,4" opacity="0.45" />
-      <path d="${sandCoast}" fill="#dfca9e" stroke="#5d4037" stroke-width="2" opacity="0.85" />
-      <path d="${land}" fill="${isCurrentDay ? "#9bb37d" : "#caba94"}" stroke="#3e2723" stroke-width="${isCurrentDay ? "3.8" : "2.6"}" />
+      <path d="${sandCoast}" fill="${config.beachColor}" stroke="#5d4037" stroke-width="2" opacity="0.85" />
+      <path d="${land}"
+            fill="${config.landColor}"
+            stroke="#3e2723"
+            stroke-width="${isCurrentDay ? "3.8" : "2.6"}" />
 
       <!-- Insel-Banner -->
       <g transform="translate(${center.x}, ${center.y - radiusY - 20})">
@@ -30,9 +37,9 @@ export function renderArchipelagoIsland(
         </text>
       </g>
 
-      <!-- Terrain-Icon -->
+      <!-- Terrain-Icon passend zum gewählten Terrain -->
       <g transform="translate(${center.x + radiusX * 0.58}, ${center.y - radiusY * 0.38}) scale(1.15)">
-        ${renderTerrainFeature({ x: 0, y: 0 }, dayData.terrain || (index === 6 ? "volcano" : "jungle"))}
+        ${renderTerrainFeature({ x: 0, y: 0 }, config.terrain)}
       </g>
 
       <!-- Events entlang der gebündelten Mittelachse -->

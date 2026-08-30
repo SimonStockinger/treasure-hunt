@@ -1,7 +1,24 @@
 export type WeekDay = "Mo" | "Di" | "Mi" | "Do" | "Fr" | "Sa" | "So";
 
-export type TerrainType =
-    "sandbank" | "jungle" | "skull_rock" | "fortress" | "volcano";
+export const TERRAIN_NAMES = [
+    "sandbank",
+    "jungle",
+    "skull_rock",
+    "fortress",
+    "volcano",
+    "treasure",
+] as const;
+
+export type TerrainType = (typeof TERRAIN_NAMES)[number];
+export type TerrMap = Record<TerrainType, string>;
+export const terrColors: TerrMap = {
+    sandbank: "#d8c59d",
+    jungle: "#8da37d",
+    skull_rock: "#91897e",
+    fortress: "#b48b71",
+    volcano: "#7a5c58",
+    treasure: "#c9a85c",
+};
 
 export interface MapEvent {
     id: string;

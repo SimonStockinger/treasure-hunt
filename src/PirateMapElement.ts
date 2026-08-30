@@ -1,6 +1,7 @@
 import { layoutArchipelago } from "./engine/archipelagoLayout";
 import { generateSeamlessMasterRoute } from "./engine/seamlessPath";
 import { renderArchipelagoIsland } from "./engine/islandRenderer";
+
 import { renderRhumbLines } from "./engine/pirateArtRenderer";
 import {
     renderCompassRose,
@@ -334,6 +335,7 @@ export class PirateMapElement extends HTMLElement {
                     isl,
                     isToday,
                     isToday ? activeEventId : null,
+                    isl.index === islands.length - 1,
                 );
             })
             .join("")}
