@@ -15,9 +15,15 @@ export function renderIslandColumn(col: ColumnLayout): string {
 
     return `
     <g class="island-column" data-day="${dayData.day}">
-      <!-- Strand & Landfläche -->
-      <path d="${beachPath}" fill="${config.beachColor}" opacity="0.55" />
-      <path d="${landPath}" fill="${config.landColor}" stroke="#4e342e" stroke-width="2.5" />
+      <path d="${beachPath}"
+            fill="${config.beachColor}"
+            style="fill: ${config.beachColor} !important;"
+            opacity="0.55" />
+      <path d="${landPath}"
+            fill="${config.landColor}"
+            style="fill: ${config.landColor} !important;"
+            stroke="#4e342e"
+            stroke-width="2.5" />
 
       <!-- Insel-Header: Wochentag & Terrain-Icon -->
       <g class="column-header" transform="translate(0, 0)">

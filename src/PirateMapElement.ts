@@ -334,6 +334,7 @@ export class PirateMapElement extends HTMLElement {
                     isl,
                     isToday,
                     isToday ? activeEventId : null,
+                    isl.index === islands.length - 1,
                 );
             })
             .join("")}
