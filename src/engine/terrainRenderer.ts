@@ -125,7 +125,7 @@ export function renderTerrainFeature(
             return `
             <g class="treashure-chest">
               <image
-                href="/public/assets/environment/island/chest-treasure-svgrepo-com.svg"
+                href="/src/assets/environment/island/chest-treasure-svgrepo-com.svg"
                 x="${center.x - 165}"
                 y="${center.y - 10}"
                 width="${48}"
@@ -138,7 +138,7 @@ export function renderTerrainFeature(
 
 export function renderDockedShip(
     pos: Point,
-    shipSvgUrl: string = "/public/assets/pirate-ship-svgrepo-com.svg",
+    shipSvgUrl: string = "/src/assets/pirate-ship-svgrepo-com.svg",
     size: { width: number; height: number } = { width: 96, height: 96 },
 ): string {
     const offsetX = -(size.width / 2);
