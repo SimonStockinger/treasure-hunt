@@ -23,6 +23,45 @@ _treasure-map_ is a dynamic pirate-themed schedule-rendering-engine.
 
 ## Overview
 
+### JSON Format
+
+```
+[ # Array containging wekkdays data
+    { # Data of single week day
+        "day": "Mo", # {Mo, Di, Mi, Do, Fr, Sa, So}
+        "label": {string},
+        "terrain": "sandbank",
+        "events": [ # Array containing events of the day
+            {
+                "id": "mo-1",
+                "title": "{string}",
+                "time": "{start - end}",
+                "location": "{string",
+                "description": "https://maps.app.goo.gl/hzXJ4TAwE2TeKBtQ7"
+            },
+            {
+                "id": "mo-3",
+                "title": "Essen im Vogelbräu",
+                "time": "16:30 - 18:30",
+                "location": "Vogelbräu",
+                "description": "Yammy"
+            },
+            {
+                "id": "mo-4",
+                "title": "Bartour",
+                "time": "19:30 - Open End",
+                "location": "Treffpunkt: Vogelbräu",
+                "description": "",
+                "isMainEvent": true
+            }
+        ]
+    },
+    ...
+]
+```
+
+See [example.json](/public/example.json) for further reference.
+
 ## Features
 
 ### Topic

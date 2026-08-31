@@ -173,7 +173,7 @@
     {
         "day": "So",
         "label": "Sonntag",
-        "terrain": "volcano",
+        "terrain": "treasure",
         "events": [
             {
                 "id": "so-1",
