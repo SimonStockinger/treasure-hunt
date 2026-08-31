@@ -1,4 +1,4 @@
-import type { MapEvent } from "../types";
+import type { MapEvent } from "../../types";
 
 export function renderEventModal(event: MapEvent, dayLabel: string): string {
     return `

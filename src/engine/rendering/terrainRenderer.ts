@@ -1,7 +1,7 @@
-import type { Point, TerrainType } from "../types";
+import type { Point, TerrainType } from "../../types";
 
-import dockedShipSvg from "../assets/pirate-ship-svgrepo-com.svg";
-import treasureChestSvg from "../assets/environment/island/chest-treasure-svgrepo-com.svg";
+import dockedShipSvg from "../../assets/pirate-ship-svgrepo-com.svg";
+import treasureChestSvg from "../../assets/environment/island/chest-treasure-svgrepo-com.svg";
 
 export function renderCompassRose(center: Point = { x: 1080, y: 120 }): string {
     const size = 55;

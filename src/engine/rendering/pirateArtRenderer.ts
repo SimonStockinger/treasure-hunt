@@ -1,4 +1,4 @@
-import type { Point } from "../types";
+import type { Point } from "../../types";
 
 function pseudoRandom(seed: number) {
     const x = Math.sin(seed++) * 10000;

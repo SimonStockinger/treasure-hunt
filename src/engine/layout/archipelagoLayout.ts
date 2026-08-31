@@ -1,4 +1,4 @@
-import type { DayData, Point, MapOrientation } from "../types";
+import type { DayData, Point, MapOrientation } from "../../types";
 
 export interface DynamicIsland {
     dayData: DayData;

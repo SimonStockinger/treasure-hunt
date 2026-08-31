@@ -1,5 +1,5 @@
-import type { DynamicIsland } from "./archipelagoLayout";
-import type { Point } from "../types";
+import type { DynamicIsland } from "../layout/archipelagoLayout";
+import type { Point } from "../../types";
 
 export function generateSeamlessMasterRoute(islands: DynamicIsland[]): string {
     if (islands.length === 0) return "";

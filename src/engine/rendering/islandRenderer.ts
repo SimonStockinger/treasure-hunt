@@ -1,8 +1,8 @@
-import type { DynamicIsland } from "./archipelagoLayout";
-import type { MapEvent } from "../types";
+import type { DynamicIsland } from "../layout/archipelagoLayout";
+import type { MapEvent } from "../../types";
 import { generateCoastline } from "./pirateArtRenderer";
 import { renderTerrainFeature } from "./terrainRenderer";
-import { getIslandConfig } from "./islandGenerator";
+import { getIslandConfig } from "../data_generation/islandGenerator";
 
 export function renderArchipelagoIsland(
     island: DynamicIsland,
