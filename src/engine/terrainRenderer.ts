@@ -126,14 +126,12 @@ export function renderTerrainFeature(
             <g class="treashure-chest">
               <image
                 href="/public/assets/environment/island/chest-treasure-svgrepo-com.svg"
-                x="${center.x - 200}"
+                x="${center.x - 165}"
                 y="${center.y - 10}"
-                width="${64}"
-                height="${64}"
+                width="${48}"
+                height="${48}"
                 preserveAspectRatio="xMidYMid meet"
               />
-              <line x1="-12" y1="6" x2="-22" y2="20" stroke="#2b1704" stroke-width="1.5" stroke-dasharray="2,2" />
-              <text x="-28" y="28" font-size="14" fill="#1f140e">⚓</text>
             </g>`;
     }
 }
@@ -141,7 +139,7 @@ export function renderTerrainFeature(
 export function renderDockedShip(
     pos: Point,
     shipSvgUrl: string = "/public/assets/pirate-ship-svgrepo-com.svg",
-    size: { width: number; height: number } = { width: 64, height: 64 },
+    size: { width: number; height: number } = { width: 96, height: 96 },
 ): string {
     const offsetX = -(size.width / 2);
     const offsetY = -(size.height * 0.75);
@@ -157,8 +155,6 @@ export function renderDockedShip(
           height="${size.height}"
           preserveAspectRatio="xMidYMid meet"
         />
-        <line x1="-12" y1="6" x2="-22" y2="20" stroke="#2b1704" stroke-width="1.5" stroke-dasharray="2,2" />
-        <text x="-28" y="28" font-size="14" fill="#1f140e">⚓</text>
       </g>
     </g>
   `;
