@@ -1,5 +1,8 @@
 import type { Point, TerrainType } from "../types";
 
+import dockedShipSvg from "../assets/pirate-ship-svgrepo-com.svg";
+import treasureChestSvg from "../assets/environment/island/chest-treasure-svgrepo-com.svg";
+
 export function renderCompassRose(center: Point = { x: 1080, y: 120 }): string {
     const size = 55;
     return `
@@ -125,7 +128,7 @@ export function renderTerrainFeature(
             return `
             <g class="treashure-chest">
               <image
-                href="/src/assets/environment/island/chest-treasure-svgrepo-com.svg"
+                href="${treasureChestSvg}"
                 x="${center.x - 165}"
                 y="${center.y - 10}"
                 width="${48}"
@@ -138,7 +141,7 @@ export function renderTerrainFeature(
 
 export function renderDockedShip(
     pos: Point,
-    shipSvgUrl: string = "/src/assets/pirate-ship-svgrepo-com.svg",
+    shipSvgUrl: string = dockedShipSvg,
     size: { width: number; height: number } = { width: 96, height: 96 },
 ): string {
     const offsetX = -(size.width / 2);
