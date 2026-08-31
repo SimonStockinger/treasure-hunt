@@ -8,6 +8,7 @@ import {
     renderSeaMonster,
     renderSeaWaves,
     renderDockedShip,
+    renderShip,
 } from "./engine/terrainRenderer";
 import { getCurrentWeekDay, getActiveEventId } from "./engine/timeUtils";
 import type { DayData, Point, MapOrientation } from "./types";
@@ -324,6 +325,9 @@ export class PirateMapElement extends HTMLElement {
         <g class="map-deko">${renderCompassRose({ x: totalWidth - 90, y: 85 })}</g>
         <g class="map-deko">${renderSeaWaves(wavePoints)}</g>
         <g class="map-deko">${renderSeaMonster({ x: totalWidth - 140, y: totalHeight - 140 })}</g>
+        <g class="map-deko">${renderShip({ x: totalWidth - 1900, y: totalHeight - 180 })}</g>
+
+
 
         <path class="map-bg" d="${masterRouteD}" fill="none" stroke="#a71d1d" stroke-width="4.5" stroke-dasharray="12, 9" stroke-linecap="round" />
 
