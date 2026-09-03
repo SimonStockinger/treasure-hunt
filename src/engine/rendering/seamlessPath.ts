@@ -1,7 +1,6 @@
-import type { DynamicIsland } from "./archipelagoLayout";
-import type { Point } from "../types";
+import type { Point, Island } from "../../types";
 
-export function generateSeamlessMasterRoute(islands: DynamicIsland[]): string {
+export function generateSeamlessMasterRoute(islands: Island[]): string {
     if (islands.length === 0) return "";
 
     const segments: string[] = [];
@@ -23,7 +22,18 @@ export function generateSeamlessMasterRoute(islands: DynamicIsland[]): string {
                 `M ${inlandPoints[0].x.toFixed(1)} ${inlandPoints[0].y.toFixed(1)}`,
             );
         }
-        segments.push(generateInlandSubPath(inlandPoints));
+        const inlandStart = inlandPoints[0];
+        const subPath = generateInlandSubPath(inlandPoints);
+
+        // Starting M command so the string is a valid standalone SVG path
+        const standalonePath = `M ${inlandStart.x.toFixed(1)} ${inlandStart.y.toFixed(1)}${subPath}`;
+        islands[i].inlandPath = standalonePath;
+
+        if (i === 0) {
+            segments.push(standalonePath);
+        } else {
+            segments.push(subPath);
+        }
 
         // Sea Path to next island
         if (i < islands.length - 1) {
@@ -57,7 +67,7 @@ function generateInlandSubPath(pts: Point[]): string {
 function createSlopedSeaRoute(
     start: Point,
     end: Point,
-    allIslands: DynamicIsland[],
+    allIslands: Island[],
     fromIdx: number,
     toIdx: number,
 ): string {

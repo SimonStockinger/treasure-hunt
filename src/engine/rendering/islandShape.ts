@@ -1,9 +1,5 @@
-import type { Point } from "../types";
-
-function pseudoRandom(seed: number) {
-    const x = Math.sin(seed++) * 10000;
-    return x - Math.floor(x);
-}
+import type { Point } from "../../types";
+import { pseudoRandom } from "../util/random";
 
 export function generateOrganicIsland(
     center: Point,

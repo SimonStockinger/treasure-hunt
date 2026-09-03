@@ -1,18 +1,18 @@
-import { layoutArchipelago } from "./engine/archipelagoLayout";
-import { generateSeamlessMasterRoute } from "./engine/seamlessPath";
-import { renderArchipelagoIsland } from "./engine/islandRenderer";
+import { layoutArchipelago } from "./engine/layout/archipelagoLayout";
+import { generateSeamlessMasterRoute } from "./engine/rendering/seamlessPath";
+import { renderArchipelagoIsland } from "./engine/rendering/islandRenderer";
 
-import { renderRhumbLines } from "./engine/pirateArtRenderer";
+import { renderRhumbLines } from "./engine/rendering/pirateArtRenderer";
 import {
     renderCompassRose,
     renderSeaMonster,
     renderSeaWaves,
     renderDockedShip,
     renderShip,
-} from "./engine/terrainRenderer";
-import { getCurrentWeekDay, getActiveEventId } from "./engine/timeUtils";
+} from "./engine/rendering/terrainRenderer";
+import { getCurrentWeekDay, getActiveEventId } from "./engine/util/timeUtils";
 import type { DayData, Point, MapOrientation } from "./types";
-import { renderEventModal } from "./engine/modalRenderer";
+import { renderEventModal } from "./engine/rendering/modalRenderer";
 
 export class PirateMapElement extends HTMLElement {
     private shadow: ShadowRoot;
@@ -328,8 +328,9 @@ export class PirateMapElement extends HTMLElement {
         <g class="map-deko">${renderShip({ x: totalWidth - 1900, y: totalHeight - 180 })}</g>
 
 
-
+        <!-- Sea Path -->
         <path class="map-bg" d="${masterRouteD}" fill="none" stroke="#a71d1d" stroke-width="4.5" stroke-dasharray="12, 9" stroke-linecap="round" />
+
 
         <!-- Interactive Islands and Events -->
         ${islands

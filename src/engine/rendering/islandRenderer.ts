@@ -1,17 +1,16 @@
-import type { DynamicIsland } from "./archipelagoLayout";
-import type { MapEvent } from "../types";
-import { generateCoastline } from "./pirateArtRenderer";
+import type { MapEvent, Point, Island } from "../../types";
 import { renderTerrainFeature } from "./terrainRenderer";
-import { getIslandConfig } from "./islandGenerator";
+import { getIslandConfig } from "../data_generation/islandGenerator";
+import { pseudoRandom } from "../util/random";
 
 export function renderArchipelagoIsland(
-    island: DynamicIsland,
+    island: Island,
     isCurrentDay: boolean,
     activeEventId: string | null,
     isLast: boolean,
 ): string {
     const { dayData, index, center, radiusX, radiusY, eventPoints } = island;
-    const seed = (index + 1) * 47;
+    const seed = (index + 1) * 42; // Defines island shape
 
     const config = getIslandConfig(dayData, isLast);
 
@@ -21,7 +20,7 @@ export function renderArchipelagoIsland(
 
     return `
     <g class="island-group ${isCurrentDay ? "active-today" : ""}" data-day="${dayData.day}">
-      <!-- Küstenlinien & Landmasse mit dynamischer Farbe -->
+      <!-- Coastline and Island -->
       <path d="${reefRing}" fill="none" stroke="#6d4c32" stroke-width="1.6" stroke-dasharray="4,4" opacity="0.45" />
       <path d="${sandCoast}" fill="${config.beachColor}" stroke="#5d4037" stroke-width="2" opacity="0.85" />
       <path d="${land}"
@@ -29,7 +28,7 @@ export function renderArchipelagoIsland(
             stroke="#3e2723"
             stroke-width="${isCurrentDay ? "3.8" : "2.6"}" />
 
-      <!-- Insel-Banner -->
+      <!-- Island Banner -->
       <g transform="translate(${center.x}, ${center.y - radiusY - 20})">
         <path d="M -105 -18 L 105 -18 L 88 18 L -88 18 Z" fill="${isCurrentDay ? "#8b261b" : "#2d1c13"}" stroke="#1a0f0a" stroke-width="2.2" />
         <text x="0" y="7" text-anchor="middle" font-size="15" font-weight="900" fill="#f4ebd9" letter-spacing="1.8">
@@ -37,12 +36,15 @@ export function renderArchipelagoIsland(
         </text>
       </g>
 
-      <!-- Terrain-Icon passend zum gewählten Terrain -->
+      <!-- Terrain Feature -->
       <g transform="translate(${center.x + radiusX * 0.58}, ${center.y - radiusY * 0.38}) scale(1.15)">
         ${renderTerrainFeature({ x: 0, y: 0 }, config.terrain)}
       </g>
 
-      <!-- Events entlang der gebündelten Mittelachse -->
+      <path class="map-bg" d="${island.inlandPath}" fill="none" stroke="#3a3335" stroke-width="3" stroke-dasharray="8, 12" stroke-linecap="round" />
+
+
+      <!-- Events alonge vertical axis -->
       ${dayData.events
           .map((event, eIdx) => {
               const pt = eventPoints[eIdx] || center;
@@ -61,6 +63,38 @@ export function renderArchipelagoIsland(
   `;
 }
 
+function generateCoastline(
+    center: Point,
+    rx: number,
+    ry: number,
+    seed: number,
+    expand: number = 0,
+): string {
+    const count = 16;
+    const points: Point[] = [];
+    const angleStep = (Math.PI * 2) / count;
+
+    for (let i = 0; i < count; i++) {
+        const angle = i * angleStep;
+        const noise = 0.82 + pseudoRandom(seed + i * 5) * 0.36;
+        points.push({
+            x: center.x + Math.cos(angle) * (rx + expand) * noise,
+            y: center.y + Math.sin(angle) * (ry + expand) * noise,
+        });
+    }
+
+    let d = `M ${points[0].x.toFixed(1)} ${points[0].y.toFixed(1)}`;
+    for (let i = 0; i < points.length; i++) {
+        const p1 = points[i];
+        const p2 = points[(i + 1) % points.length];
+        const midX = (p1.x + p2.x) / 2;
+        const midY = (p1.y + p2.y) / 2;
+        d += ` Q ${p1.x.toFixed(1)} ${p1.y.toFixed(1)} ${midX.toFixed(1)} ${midY.toFixed(1)}`;
+    }
+    d += " Z";
+    return d;
+}
+
 function renderEventStation(
     event: MapEvent,
     x: number,
@@ -69,6 +103,7 @@ function renderEventStation(
     dayKey: string,
     eventIndex: number,
 ): string {
+    // Event station Card
     const isRightSide = eventIndex % 2 === 0;
 
     const titleLen = event.title ? event.title.length : 0;
@@ -92,12 +127,12 @@ function renderEventStation(
        data-day-key="${dayKey}"
        data-day="${dayKey}">
       <g class="event-node-inner">
-        <!-- Zentraler Wegpunkt-Pin -->
+        <!-- Point -->
         <circle cx="0" cy="0" r="${isActive ? "11" : "8"}"
                 fill="${isActive ? "#a71d1d" : "#4e342e"}"
                 stroke="#f4ebd9" stroke-width="${isActive ? "3.5" : "2.2"}" />
 
-        <!-- Vergrößertes Kärtchen -->
+        <!-- Enlarged Note -->
         <g transform="translate(${boxX}, ${boxY})">
           <rect width="${boxW}" height="${boxH}" rx="8"
                 fill="${isActive ? "#fffdf5" : "#fdfaf2"}"
@@ -105,7 +140,7 @@ function renderEventStation(
                 stroke-width="${isActive ? "3.2" : "2"}"
                 filter="drop-shadow(2px 5px ${isActive ? "14px rgba(167, 29, 29, 0.55)" : "6px rgba(0,0,0,0.25)"})" />
 
-          <!-- Rotes "X" für das aktive Event -->
+          <!-- Mark currently active event -->
           ${
               isActive
                   ? `
@@ -117,17 +152,17 @@ function renderEventStation(
                   : ""
           }
 
-          <!-- 1. Zeile: Uhrzeit (groß & fett) -->
+          <!-- 1. Row: Time -->
           <text x="14" y="20" font-size="12.5" font-weight="bold" fill="${isActive ? "#a71d1d" : "#6d4c41"}">
             ${event.time || "Ganztägig"}
           </text>
 
-          <!-- 2. Zeile: Voller Titel (15px, sehr gut lesbar) -->
+          <!-- 2. Row: Title -->
           <text x="14" y="42" font-size="15" font-weight="900" fill="${isActive ? "#8b1e0f" : "#1a0f07"}">
             ${event.title}
           </text>
 
-          <!-- 3. Zeile: Subtitle Location -->
+          <!-- 3. Row: Location -->
           ${
               hasLocation
                   ? `

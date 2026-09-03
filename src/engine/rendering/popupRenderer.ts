@@ -1,4 +1,4 @@
-import type { DayData, Point } from "../types";
+import type { DayData, Point } from "../../types";
 
 export function renderDayPopup(dayData: DayData, pos: Point): string {
     const hasEvents = dayData.events && dayData.events.length > 0;

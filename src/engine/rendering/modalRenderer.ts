@@ -1,4 +1,4 @@
-import type { MapEvent } from "../types";
+import type { MapEvent } from "../../types";
 
 export function renderEventModal(event: MapEvent, dayLabel: string): string {
     return `
@@ -6,7 +6,6 @@ export function renderEventModal(event: MapEvent, dayLabel: string): string {
       <div class="parchment-modal-scroll" role="dialog">
         <button class="modal-close" id="modal-close-btn" aria-label="Schließen">&times;</button>
 
-        <div class="modal-wax-seal">⚓</div>
         <div class="modal-tag">${dayLabel.toUpperCase()}</div>
         <h2 class="modal-title">${event.title}</h2>
 
@@ -28,7 +27,7 @@ export function renderEventModal(event: MapEvent, dayLabel: string): string {
         <div class="modal-divider">~ ☠ ~</div>
 
         <p class="modal-desc">
-          ${event.description || "Keine weiteren Kaperbefehle für diesen Wegpunkt verzeichnet."}
+          ${event.description || ""}
         </p>
       </div>
     </div>

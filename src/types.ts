@@ -48,3 +48,22 @@ export interface MapOptions {
 }
 
 export type MapOrientation = "horizontal" | "vertical";
+
+export interface Island {
+    dayData: DayData;
+    index: number;
+    center: Point;
+    radiusX: number;
+    radiusY: number;
+    entryPoint: Point;
+    exitPoint: Point;
+    eventPoints: Point[];
+    inlandPath?: string;
+}
+
+export interface ArchipelagoResult {
+    islands: Island[];
+    totalWidth: number;
+    totalHeight: number;
+    orientation: MapOrientation;
+}

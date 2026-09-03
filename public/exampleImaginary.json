@@ -1,0 +1,187 @@
+[
+    {
+        "day": "Mo",
+        "label": "Montag",
+        "terrain": "sandbank",
+        "events": [
+            {
+                "id": "mo-1",
+                "title": "Kennenlernen & Kielholen",
+                "time": "13:00 - 16:00",
+                "location": "Hauptdeck der 'Schwarzen Krake'",
+                "description": "Deck schrubben, Tauziehen und die ersten Knoten ins Seemannsgarn flechten."
+            },
+            {
+                "id": "mo-2",
+                "title": "Schmaus im Einäugigen Papagei",
+                "time": "16:30 - 18:30",
+                "location": "Spelunke 'Zum Einäugigen Papagei'",
+                "description": "Pfeffriger Stockfisch und Salzfleisch zu Wucherpreisen – Golddublonen bereithalten!"
+            },
+            {
+                "id": "mo-3",
+                "title": "Kaperfahrt durch die Hafenspelunken",
+                "time": "19:30 - Open End",
+                "location": "Treffpunkt: Schmugglerbucht",
+                "description": "Grog-Tour durch die finstersten Tavernen der Insel. Niemand weiß, wie der Abend endete.",
+                "isMainEvent": true
+            }
+        ]
+    },
+    {
+        "day": "Di",
+        "label": "Dienstag",
+        "terrain": "jungle",
+        "events": [
+            {
+                "id": "di-1",
+                "title": "Kombüsen-Brunch",
+                "time": "09:30 - 12:00",
+                "location": "Kombüse der Meereshexe",
+                "description": "Scharfes Koeri-Krabbenfleisch und steinharter Schiffszwieback."
+            },
+            {
+                "id": "di-2",
+                "title": "Seekartenkunde & Festungs-Rundgang",
+                "time": "12:00 - 13:30",
+                "location": "Großer Ratssaal der Freibeuter",
+                "description": "Einweisung durch den Ältestenrat: Fluchtrouten, Fallen und geheime Schatzkammern."
+            },
+            {
+                "id": "di-3",
+                "title": "Pökelfleisch-Pause",
+                "time": "14:00 - 16:00",
+                "location": "Handelsposten Tortuga",
+                "description": "Späte Stärkung vor der Dschungel-Expedition."
+            },
+            {
+                "id": "di-4",
+                "title": "Würfelspiel in der Taverne",
+                "time": "19:00 - 23:00",
+                "location": "Taverne 'Zum Rostigen Anker'",
+                "description": "Lügen, Bluffen und Totenkopf-Würfeln um den letzten Schluck Rum."
+            }
+        ]
+    },
+    {
+        "day": "Mi",
+        "label": "Mittwoch",
+        "terrain": "fortress",
+        "events": [
+            {
+                "id": "mi-1",
+                "title": "Kanonenputzer-Frühstück",
+                "time": "09:30 - 12:00",
+                "location": "Zitadelle der Verdammten",
+                "description": "Frühe Ration Sauerkraut gegen Skorbut und schwarzer Teer-Kaffee."
+            },
+            {
+                "id": "mi-2",
+                "title": "Freibeuter-Olympiade",
+                "time": "13:30 - 18:00",
+                "location": "Schnittwunden-Bucht",
+                "description": "Kanonenkugellauf, Entern auf Zeit und Holzbein-Weitwurf (fällt bei Sturmflut aus)."
+            },
+            {
+                "id": "mi-3",
+                "title": "Nacht des Weißen Rums",
+                "time": "19:30 - Open End",
+                "location": "Höhle der Sirenen",
+                "description": "Geführter Streifzug zu den geheimsten Schwarzbrenner-Katakomben der Piratenküste.",
+                "isMainEvent": true
+            }
+        ]
+    },
+    {
+        "day": "Do",
+        "label": "Donnerstag",
+        "terrain": "jungle",
+        "events": [
+            {
+                "id": "do-1",
+                "title": "Katerfrühstück der Meuterei",
+                "time": "10:30 - 12:30",
+                "location": "Zuflucht der Gestrandeten",
+                "description": "Fassbrause und Rollmöpse gegen das Dröhnen im Schädel nach der Schlacht."
+            },
+            {
+                "id": "do-2",
+                "title": "Die Große Schatzjagd",
+                "time": "14:00 - 17:30",
+                "location": "Verfluchter Mangrovenwald",
+                "description": "Stationen-Rallye nach der zerrissenen Schatzkarte mit Rätseln alter Kapitäne."
+            },
+            {
+                "id": "do-3",
+                "title": "Spanferkel am Strandfeuer",
+                "time": "17:00 - Open End",
+                "location": "Lagerfeuerplatz der Totenkopf-Insel",
+                "description": "Gebratenes Wildschwein, Seemannslieder und Feuerwasser bis zum Morgengrauen."
+            }
+        ]
+    },
+    {
+        "day": "Fr",
+        "label": "Freitag",
+        "terrain": "skull_rock",
+        "events": [
+            {
+                "id": "fr-1",
+                "title": "Markt der Schmuggler & Heuer",
+                "time": "09:30 - 12:00",
+                "location": "Basar des Schmugglernests",
+                "description": "Finde deine Crew: Schließe Bündnisse mit Gilden, Kaperfahrern und Barden."
+            },
+            {
+                "id": "fr-2",
+                "title": "Schlacht um die Schatzkammer & Flucht",
+                "time": "14:30 - 17:00",
+                "location": "Festung Totenkopffelsen",
+                "description": "Die große Jagd auf den Geisterkapitän durch das verzweigte Höhlensystem.",
+                "isMainEvent": true
+            },
+            {
+                "id": "fr-3",
+                "title": "Kanonendonner-Gelage",
+                "time": "17:00 - 20:00",
+                "location": "Großes Arsenal der Kaperfahrer",
+                "description": "Das absolute Spektakel: 3 Decks voller Musik, Trommeln und fliegender Becher."
+            },
+            {
+                "id": "fr-4",
+                "title": "Volltrunkenes Versacken",
+                "time": "20:00 - Open End",
+                "location": "Kajüte des Quartiermeisters",
+                "description": "Die Kaperwoche friedlich im Qualm der Pfeifen ausklingen lassen."
+            }
+        ]
+    },
+    {
+        "day": "Sa",
+        "label": "Samstag",
+        "terrain": "sandbank",
+        "events": [
+            {
+                "id": "sa-1",
+                "title": "Einsame-Insel-Ruhe",
+                "time": "12:00 - 14:30",
+                "location": "Hängematten-Bucht",
+                "description": "Kokosmilch, frischer Kräutertee und Wundenlecken nach der großen Kaperfahrt."
+            }
+        ]
+    },
+    {
+        "day": "So",
+        "label": "Sonntag",
+        "terrain": "treasure",
+        "events": [
+            {
+                "id": "so-1",
+                "title": "Ausguck auf den Horizont",
+                "time": "19:00 - 20:30",
+                "location": "Nebelgipfel des Ausgucks",
+                "description": "Letzter Blick durchs Fernrohr: Welcher Sturm zieht am Montagmorgen um 08:00 Uhr auf?"
+            }
+        ]
+    }
+]
