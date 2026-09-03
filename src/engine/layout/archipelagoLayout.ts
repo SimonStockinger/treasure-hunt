@@ -138,11 +138,11 @@ function layoutHorizontal(days: DayData[]): ArchipelagoResult {
 
         const center: Point = { x: currentX, y: centerY };
 
-        const entryPoint: Point = {
+        let entryPoint: Point = {
             x: center.x - radiusX * 0.6,
             y: isTop ? center.y + radiusY * 0.6 : center.y - radiusY * 0.6,
         };
-        const exitPoint: Point = {
+        let exitPoint: Point = {
             x: center.x + radiusX * 0.6,
             y: isTop ? center.y + radiusY * 0.6 : center.y - radiusY * 0.6,
         };
@@ -151,8 +151,23 @@ function layoutHorizontal(days: DayData[]): ArchipelagoResult {
             dayData,
             center,
             radiusY,
-            "horizontal",
+            "vertical",
         );
+
+        if (eventPoints && eventPoints.length > 0) {
+            const firstPoint = eventPoints[0];
+            const lastPoint = eventPoints.at(eventCount - 1) ?? firstPoint;
+
+            entryPoint = {
+                x: firstPoint.x,
+                y: firstPoint.y,
+            };
+
+            exitPoint = {
+                x: lastPoint.x,
+                y: lastPoint.y,
+            };
+        }
 
         islands.push({
             dayData,
