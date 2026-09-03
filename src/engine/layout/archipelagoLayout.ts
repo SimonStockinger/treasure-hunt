@@ -177,10 +177,10 @@ function createEventPoints(
 
     const stepY = (radiusY * 2 - 80) / count;
     const topOffset = center.y - radiusY + 50;
-    const amplitude = (orientation === "vertical" ? 16 : 8) * 6;
+    const amplitude = orientation === "vertical" ? 32 : 16;
 
     return dayData.events.map((_, idx) => {
-        const seed = dayIndex * 100 + idx;
+        const seed = dayIndex * 42 + idx;
         const sign = posPseudoRandom(seed) < 0.5 ? -1 : 1;
         const waveX = Math.sin(idx * 1.5) * amplitude * sign;
 

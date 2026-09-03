@@ -328,6 +328,8 @@ export class PirateMapElement extends HTMLElement {
         <g class="map-deko">${renderShip({ x: totalWidth - 1900, y: totalHeight - 180 })}</g>
 
 
+        <path class="map-bg" d="${masterRouteD}" fill="none" stroke="#a71d1d" stroke-width="4.5" stroke-dasharray="12, 9" stroke-linecap="round" />
+
 
         <!-- Interactive Islands and Events -->
         ${islands
@@ -343,7 +345,6 @@ export class PirateMapElement extends HTMLElement {
             .join("")}
 
         <!-- Path -->
-        <path class="map-bg" d="${masterRouteD}" fill="none" stroke="#a71d1d" stroke-width="4.5" stroke-dasharray="12, 9" stroke-linecap="round" />
 
         <!-- Flaggship -->
         ${renderDockedShip(currentIsland.entryPoint)}
