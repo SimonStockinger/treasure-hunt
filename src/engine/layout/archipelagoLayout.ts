@@ -2,7 +2,7 @@ import type {
     DayData,
     Point,
     MapOrientation,
-    DynamicIsland,
+    Island,
     ArchipelagoResult,
 } from "../../types";
 import { posPseudoRandom } from "../util/random";
@@ -77,7 +77,7 @@ export function layoutArchipelago(
 ): ArchipelagoResult {
     const isVertical = orientation === "vertical";
     const config = isVertical ? VERTICAL_CONFIG : HORIZONTAL_CONFIG;
-    const islands: DynamicIsland[] = [];
+    const islands: Island[] = [];
 
     let currentMainCoord = config.startCoord;
     let prevRadiusMain = 0;

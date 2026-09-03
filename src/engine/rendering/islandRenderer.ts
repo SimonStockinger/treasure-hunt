@@ -1,10 +1,10 @@
-import type { MapEvent, Point, DynamicIsland } from "../../types";
+import type { MapEvent, Point, Island } from "../../types";
 import { renderTerrainFeature } from "./terrainRenderer";
 import { getIslandConfig } from "../data_generation/islandGenerator";
 import { pseudoRandom } from "../util/random";
 
 export function renderArchipelagoIsland(
-    island: DynamicIsland,
+    island: Island,
     isCurrentDay: boolean,
     activeEventId: string | null,
     isLast: boolean,
@@ -40,6 +40,9 @@ export function renderArchipelagoIsland(
       <g transform="translate(${center.x + radiusX * 0.58}, ${center.y - radiusY * 0.38}) scale(1.15)">
         ${renderTerrainFeature({ x: 0, y: 0 }, config.terrain)}
       </g>
+
+      <path class="map-bg" d="${island.inlandPath}" fill="none" stroke="#3a3335" stroke-width="3" stroke-dasharray="8, 12" stroke-linecap="round" />
+
 
       <!-- Events alonge vertical axis -->
       ${dayData.events
