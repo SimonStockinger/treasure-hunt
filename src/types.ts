@@ -48,3 +48,21 @@ export interface MapOptions {
 }
 
 export type MapOrientation = "horizontal" | "vertical";
+
+export interface DynamicIsland {
+    dayData: DayData;
+    index: number;
+    center: Point;
+    radiusX: number;
+    radiusY: number;
+    entryPoint: Point;
+    exitPoint: Point;
+    eventPoints: Point[];
+}
+
+export interface ArchipelagoResult {
+    islands: DynamicIsland[];
+    totalWidth: number;
+    totalHeight: number;
+    orientation: MapOrientation;
+}

@@ -1,22 +1,11 @@
-import type { DayData, Point, MapOrientation } from "../../types";
-
-export interface DynamicIsland {
-    dayData: DayData;
-    index: number;
-    center: Point;
-    radiusX: number;
-    radiusY: number;
-    entryPoint: Point;
-    exitPoint: Point;
-    eventPoints: Point[];
-}
-
-export interface ArchipelagoResult {
-    islands: DynamicIsland[];
-    totalWidth: number;
-    totalHeight: number;
-    orientation: MapOrientation;
-}
+import type {
+    DayData,
+    Point,
+    MapOrientation,
+    DynamicIsland,
+    ArchipelagoResult,
+} from "../../types";
+import { posPseudoRandom } from "../util/random";
 
 export function layoutArchipelago(
     days: DayData[],
@@ -62,11 +51,12 @@ function layoutVertical(days: DayData[]): ArchipelagoResult {
 
         const center: Point = { x: centerX, y: currentY };
 
-        const entryPoint: Point = {
+        let entryPoint: Point = {
             x: isLeft ? center.x + radiusX * 0.65 : center.x - radiusX * 0.65,
             y: center.y - radiusY * 0.6,
         };
-        const exitPoint: Point = {
+
+        let exitPoint: Point = {
             x: isLeft ? center.x + radiusX * 0.65 : center.x - radiusX * 0.65,
             y: center.y + radiusY * 0.6,
         };
@@ -77,6 +67,21 @@ function layoutVertical(days: DayData[]): ArchipelagoResult {
             radiusY,
             "vertical",
         );
+
+        if (eventPoints && eventPoints.length > 0) {
+            const firstPoint = eventPoints[0];
+            const lastPoint = eventPoints.at(eventCount - 1) ?? firstPoint;
+
+            entryPoint = {
+                x: firstPoint.x,
+                y: firstPoint.y,
+            };
+
+            exitPoint = {
+                x: lastPoint.x,
+                y: lastPoint.y,
+            };
+        }
 
         islands.push({
             dayData,
@@ -179,10 +184,12 @@ function createEventPoints(
     if (dayData.events.length > 0) {
         const stepY = (radiusY * 2 - 80) / dayData.events.length;
         const topOffset = center.y - radiusY + 50;
-
         dayData.events.forEach((_, idx) => {
-            const waveX =
-                Math.sin(idx * 1.5) * (orientation === "vertical" ? 16 : 8);
+            const multiplyer = 6;
+            const amplitude = orientation === "vertical" ? 16 : 8;
+            const sign = posPseudoRandom(idx) < 0.5 ? -1 : 1;
+            const waveX = multiplyer * Math.sin(idx * 1.5) * amplitude * sign;
+
             points.push({
                 x: center.x + waveX,
                 y: topOffset + (idx + 0.5) * stepY,
