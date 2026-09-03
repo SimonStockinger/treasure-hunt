@@ -7,81 +7,119 @@ import type {
 } from "../../types";
 import { posPseudoRandom } from "../util/random";
 
+const WEEK_KEYS = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"] as const;
+
+interface OrientationConfig {
+    canvasWidth: number | null;
+    canvasHeight: number | null;
+    overlapFactor: number;
+    endPadding: number;
+    startCoord: number;
+    computeRadii: (
+        eventCount: number,
+        hasMain: boolean,
+    ) => { radiusX: number; radiusY: number };
+    computeCrossCoord: (isEven: boolean) => number;
+    computeDefaultPoints: (
+        center: Point,
+        radiusX: number,
+        radiusY: number,
+        isEven: boolean,
+    ) => {
+        entryPoint: Point;
+        exitPoint: Point;
+    };
+}
+
+const VERTICAL_CONFIG: OrientationConfig = {
+    canvasWidth: 1000,
+    canvasHeight: null,
+    overlapFactor: 0.88,
+    endPadding: 120,
+    startCoord: 160,
+    computeRadii: (eventCount, hasMain) => ({
+        radiusX: 175 + (hasMain ? 20 : 0),
+        radiusY: 80 + eventCount * 36 + (hasMain ? 20 : 0),
+    }),
+    computeCrossCoord: (isLeft) => (isLeft ? 280 : 720),
+    computeDefaultPoints: (center, radiusX, radiusY, isLeft) => {
+        const offsetX = (isLeft ? 1 : -1) * radiusX * 0.65;
+        return {
+            entryPoint: { x: center.x + offsetX, y: center.y - radiusY * 0.6 },
+            exitPoint: { x: center.x + offsetX, y: center.y + radiusY * 0.6 },
+        };
+    },
+};
+
+const HORIZONTAL_CONFIG: OrientationConfig = {
+    canvasWidth: null,
+    canvasHeight: 900,
+    overlapFactor: 0.9,
+    endPadding: 160,
+    startCoord: 180,
+    computeRadii: (eventCount, hasMain) => ({
+        radiusX: 100 + eventCount * 12 + (hasMain ? 20 : 0),
+        radiusY: 140 + eventCount * 18 + (hasMain ? 20 : 0),
+    }),
+    computeCrossCoord: (isTop) => (isTop ? 270 : 630),
+    computeDefaultPoints: (center, radiusX, radiusY, isTop) => {
+        const offsetY = (isTop ? 1 : -1) * radiusY * 0.6;
+        return {
+            entryPoint: { x: center.x - radiusX * 0.6, y: center.y + offsetY },
+            exitPoint: { x: center.x + radiusX * 0.6, y: center.y + offsetY },
+        };
+    },
+};
+
 export function layoutArchipelago(
     days: DayData[],
     orientation: MapOrientation = "vertical",
 ): ArchipelagoResult {
-    return orientation === "horizontal"
-        ? layoutHorizontal(days)
-        : layoutVertical(days);
-}
-
-function layoutVertical(days: DayData[]): ArchipelagoResult {
-    const weekKeys = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+    const isVertical = orientation === "vertical";
+    const config = isVertical ? VERTICAL_CONFIG : HORIZONTAL_CONFIG;
     const islands: DynamicIsland[] = [];
-    const canvasWidth = 1000;
-    const colLeftX = 280;
-    const colRightX = 720;
-    const startY = 160;
 
-    let currentY = startY;
-    let prevRadiusY = 0;
+    let currentMainCoord = config.startCoord;
+    let prevRadiusMain = 0;
 
-    weekKeys.forEach((key, index) => {
-        const dayData = days.find((d) => d.day === key) || {
+    WEEK_KEYS.forEach((key, index) => {
+        const dayData = days.find((d) => d.day === key) ?? {
             day: key as any,
             label: key,
             events: [],
         };
+
         const eventCount = Math.max(dayData.events.length, 1);
         const hasMain = dayData.events.some((e) => e.isMainEvent);
+        const { radiusX, radiusY } = config.computeRadii(eventCount, hasMain);
 
-        const radiusX = 175 + (hasMain ? 20 : 0);
-        const radiusY = 80 + eventCount * 36 + (hasMain ? 20 : 0);
-
-        const isLeft = index % 2 === 0;
-        const centerX = isLeft ? colLeftX : colRightX;
+        const radiusMain = isVertical ? radiusY : radiusX;
+        const isEven = index % 2 === 0;
+        const crossCoord = config.computeCrossCoord(isEven);
 
         if (index === 0) {
-            currentY = startY + radiusY;
+            currentMainCoord = config.startCoord + radiusMain;
         } else {
-            currentY += (prevRadiusY + radiusY) * 0.88;
+            currentMainCoord +=
+                (prevRadiusMain + radiusMain) * config.overlapFactor;
         }
-        prevRadiusY = radiusY;
+        prevRadiusMain = radiusMain;
 
-        const center: Point = { x: centerX, y: currentY };
-
-        let entryPoint: Point = {
-            x: isLeft ? center.x + radiusX * 0.65 : center.x - radiusX * 0.65,
-            y: center.y - radiusY * 0.6,
-        };
-
-        let exitPoint: Point = {
-            x: isLeft ? center.x + radiusX * 0.65 : center.x - radiusX * 0.65,
-            y: center.y + radiusY * 0.6,
-        };
+        const center: Point = isVertical
+            ? { x: crossCoord, y: currentMainCoord }
+            : { x: currentMainCoord, y: crossCoord };
 
         const eventPoints = createEventPoints(
             dayData,
             center,
             radiusY,
-            "vertical",
+            orientation,
+            index,
         );
-
-        if (eventPoints && eventPoints.length > 0) {
-            const firstPoint = eventPoints[0];
-            const lastPoint = eventPoints.at(eventCount - 1) ?? firstPoint;
-
-            entryPoint = {
-                x: firstPoint.x,
-                y: firstPoint.y,
-            };
-
-            exitPoint = {
-                x: lastPoint.x,
-                y: lastPoint.y,
-            };
-        }
+        const { entryPoint, exitPoint } = resolveBoundaryPoints(
+            eventPoints,
+            config.computeDefaultPoints(center, radiusX, radiusY, isEven),
+        );
 
         islands.push({
             dayData,
@@ -95,97 +133,35 @@ function layoutVertical(days: DayData[]): ArchipelagoResult {
         });
     });
 
+    const totalDimension =
+        currentMainCoord + prevRadiusMain + config.endPadding;
+
     return {
         islands,
-        totalWidth: canvasWidth,
-        totalHeight: currentY + prevRadiusY + 120,
-        orientation: "vertical",
+        totalWidth: isVertical
+            ? (config.canvasWidth as number)
+            : totalDimension,
+        totalHeight: isVertical
+            ? totalDimension
+            : (config.canvasHeight as number),
+        orientation,
     };
 }
 
-function layoutHorizontal(days: DayData[]): ArchipelagoResult {
-    const weekKeys = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
-    const islands: DynamicIsland[] = [];
-    const canvasHeight = 900;
-    const rowTopY = 270;
-    const rowBottomY = 630;
-    const startX = 180;
+function resolveBoundaryPoints(
+    eventPoints: Point[],
+    defaultPoints: { entryPoint: Point; exitPoint: Point },
+): { entryPoint: Point; exitPoint: Point } {
+    if (eventPoints.length === 0) {
+        return defaultPoints;
+    }
 
-    let currentX = startX;
-    let prevRadiusX = 0;
-
-    weekKeys.forEach((key, index) => {
-        const dayData = days.find((d) => d.day === key) || {
-            day: key as any,
-            label: key,
-            events: [],
-        };
-        const eventCount = Math.max(dayData.events.length, 1);
-        const hasMain = dayData.events.some((e) => e.isMainEvent);
-
-        const radiusX = 100 + eventCount * 12 + (hasMain ? 20 : 0);
-        const radiusY = 140 + eventCount * 18 + (hasMain ? 20 : 0);
-
-        const isTop = index % 2 === 0;
-        const centerY = isTop ? rowTopY : rowBottomY;
-
-        if (index === 0) {
-            currentX = startX + radiusX;
-        } else {
-            currentX += (prevRadiusX + radiusX) * 0.9;
-        }
-        prevRadiusX = radiusX;
-
-        const center: Point = { x: currentX, y: centerY };
-
-        let entryPoint: Point = {
-            x: center.x - radiusX * 0.6,
-            y: isTop ? center.y + radiusY * 0.6 : center.y - radiusY * 0.6,
-        };
-        let exitPoint: Point = {
-            x: center.x + radiusX * 0.6,
-            y: isTop ? center.y + radiusY * 0.6 : center.y - radiusY * 0.6,
-        };
-
-        const eventPoints = createEventPoints(
-            dayData,
-            center,
-            radiusY,
-            "vertical",
-        );
-
-        if (eventPoints && eventPoints.length > 0) {
-            const firstPoint = eventPoints[0];
-            const lastPoint = eventPoints.at(eventCount - 1) ?? firstPoint;
-
-            entryPoint = {
-                x: firstPoint.x,
-                y: firstPoint.y,
-            };
-
-            exitPoint = {
-                x: lastPoint.x,
-                y: lastPoint.y,
-            };
-        }
-
-        islands.push({
-            dayData,
-            index,
-            center,
-            radiusX,
-            radiusY,
-            entryPoint,
-            exitPoint,
-            eventPoints,
-        });
-    });
+    const first = eventPoints[0];
+    const last = eventPoints[eventPoints.length - 1];
 
     return {
-        islands,
-        totalWidth: currentX + prevRadiusX + 160,
-        totalHeight: canvasHeight,
-        orientation: "horizontal",
+        entryPoint: { x: first.x, y: first.y },
+        exitPoint: { x: last.x, y: last.y },
     };
 }
 
@@ -194,22 +170,23 @@ function createEventPoints(
     center: Point,
     radiusY: number,
     orientation: MapOrientation,
+    dayIndex: number,
 ): Point[] {
-    const points: Point[] = [];
-    if (dayData.events.length > 0) {
-        const stepY = (radiusY * 2 - 80) / dayData.events.length;
-        const topOffset = center.y - radiusY + 50;
-        dayData.events.forEach((_, idx) => {
-            const multiplyer = 6;
-            const amplitude = orientation === "vertical" ? 16 : 8;
-            const sign = posPseudoRandom(idx) < 0.5 ? -1 : 1;
-            const waveX = multiplyer * Math.sin(idx * 1.5) * amplitude * sign;
+    const count = dayData.events.length;
+    if (count === 0) return [];
 
-            points.push({
-                x: center.x + waveX,
-                y: topOffset + (idx + 0.5) * stepY,
-            });
-        });
-    }
-    return points;
+    const stepY = (radiusY * 2 - 80) / count;
+    const topOffset = center.y - radiusY + 50;
+    const amplitude = (orientation === "vertical" ? 16 : 8) * 6;
+
+    return dayData.events.map((_, idx) => {
+        const seed = dayIndex * 100 + idx;
+        const sign = posPseudoRandom(seed) < 0.5 ? -1 : 1;
+        const waveX = Math.sin(idx * 1.5) * amplitude * sign;
+
+        return {
+            x: center.x + waveX,
+            y: topOffset + (idx + 0.5) * stepY,
+        };
+    });
 }
