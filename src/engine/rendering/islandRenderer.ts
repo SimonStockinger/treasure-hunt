@@ -127,7 +127,7 @@ export function getEventCardDimensions(
 }
 
 /**
- * Renders ONLY the event card SVG elements.
+ * Renders the event card SVG elements.
  * Can be positioned using custom offsetX/offsetY (defaults to 0, 0).
  */
 export function renderEventStationCard(
@@ -136,12 +136,17 @@ export function renderEventStationCard(
     offsetX: number = 0,
     offsetY: number = 0,
     customWidth?: number,
+    dayKey?: string,
 ): string {
     const { boxW, boxH } = getEventCardDimensions(event, isActive, customWidth);
     const hasLocation = Boolean(event.location);
 
     return `
-     <g class="event-station-card" transform="translate(${offsetX}, ${offsetY})">
+     <g class="event-station-card"
+        transform="translate(${offsetX}, ${offsetY})"
+        data-event-id="${event.id}"
+        ${dayKey ? `data-day="${dayKey}"` : ""}
+        style="cursor: pointer;">
        <rect width="${boxW}" height="${boxH}" rx="8"
              fill="${isActive ? "#fffdf5" : "#fdfaf2"}"
              stroke="${isActive ? "#a71d1d" : "#6d4c32"}"
@@ -179,7 +184,6 @@ export function renderEventStationCard(
      </g>
    `;
 }
-
 /**
  * Renders the node pin on the map along with the attached event card.
  */

@@ -60,7 +60,14 @@ export function renderIslandModal(
 
         currentY += boxH + cardGap;
 
-        return renderEventStationCard(event, isActive, x, y, fullCardWidth);
+        return renderEventStationCard(
+            event,
+            isActive,
+            x,
+            y,
+            fullCardWidth,
+            dayData.day,
+        );
     });
 
     const totalHeight = Math.max(120, currentY + 8);
@@ -72,13 +79,11 @@ export function renderIslandModal(
 
         <div class="modal-tag">${dayLabel.toUpperCase()}</div>
 
-        <div class="island-modal-pannel">
-          <svg class="island-modal-svg" viewBox="0 0 ${panelWidth} ${totalHeight}" width="100%" height="${totalHeight}">
-            ${cards.join("")}
-          </svg>
+        <svg class="island-modal-svg" viewBox="0 0 ${panelWidth} ${totalHeight}" width="100%">
+          ${cards.join("")}
+        </svg>
 
-          <div class="modal-divider">~ ☠ ~</div>
-        </div>
+        <div class="modal-divider">~ ☠ ~</div>
       </div>
     </div>
   `;

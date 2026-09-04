@@ -12,7 +12,7 @@ import {
     renderShip,
 } from "./engine/rendering/terrainRenderer";
 import { getCurrentWeekDay, getActiveEventId } from "./engine/util/timeUtils";
-import type { DayData, Point, MapOrientation, MapEvent } from "./types";
+import type { DayData, Point, MapOrientation } from "./types";
 import {
     renderEventModal,
     renderIslandModal,
@@ -172,7 +172,15 @@ export class PirateMapElement extends HTMLElement {
             .join("")}
 
         <!-- Flaggship -->
-        ${renderDockedShip(currentIsland.entryPoint)}
+
+        ${(() => {
+            const index = Number(activeEventId?.replace(/\D/g, "")) - 1;
+            return renderDockedShip(
+                currentIsland.eventPoints[index]
+                    ? currentIsland.eventPoints[index]
+                    : currentIsland.entryPoint,
+            );
+        })()}
       `;
 
         this.attachInteractions(days, currentDayKey, activeEventId);
@@ -228,28 +236,6 @@ export class PirateMapElement extends HTMLElement {
         return { event, day };
     }
 
-    private openEventModal(event: any, dayLabel: string) {
-        const container = this.shadow.querySelector(".parchment-frame");
-        if (!container) return;
-
-        this.shadow.querySelector("#modal-backdrop")?.remove();
-
-        container.insertAdjacentHTML(
-            "beforeend",
-            renderEventModal(event, dayLabel),
-        );
-
-        const backdrop = this.shadow.querySelector("#modal-backdrop");
-        const closeBtn = this.shadow.querySelector("#modal-close-btn");
-
-        const closeModal = () => backdrop?.remove();
-
-        closeBtn?.addEventListener("click", closeModal);
-        backdrop?.addEventListener("click", (e) => {
-            if (e.target === backdrop) closeModal();
-        });
-    }
-
     private openIslandModal(
         dayData: DayData,
         dayLabel: string,
@@ -268,12 +254,59 @@ export class PirateMapElement extends HTMLElement {
 
         const backdrop = this.shadow.querySelector("#modal-backdrop");
         const closeBtn = this.shadow.querySelector("#modal-close-btn");
-
         const closeModal = () => backdrop?.remove();
 
         closeBtn?.addEventListener("click", closeModal);
         backdrop?.addEventListener("click", (e) => {
             if (e.target === backdrop) closeModal();
+        });
+
+        const eventCards = backdrop?.querySelectorAll<SVGElement>(
+            ".event-station-card",
+        );
+        eventCards?.forEach((card) => {
+            card.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const eventId = card.getAttribute("data-event-id");
+                const event = dayData.events.find((ev) => ev.id === eventId);
+                if (!event) return;
+
+                this.openEventModal(event, dayLabel, () => {
+                    this.openIslandModal(
+                        dayData,
+                        dayLabel,
+                        currentDayKey,
+                        activeEventId,
+                    );
+                });
+            });
+        });
+    }
+
+    private openEventModal(event: any, dayLabel: string, onBack?: () => void) {
+        const container = this.shadow.querySelector(".parchment-frame");
+        if (!container) return;
+
+        this.shadow.querySelector("#modal-backdrop")?.remove();
+
+        container.insertAdjacentHTML(
+            "beforeend",
+            renderEventModal(event, dayLabel),
+        );
+
+        const backdrop = this.shadow.querySelector("#modal-backdrop");
+        const closeBtn = this.shadow.querySelector("#modal-close-btn");
+
+        const handleClose = () => {
+            backdrop?.remove();
+            if (onBack) {
+                onBack();
+            }
+        };
+
+        closeBtn?.addEventListener("click", handleClose);
+        backdrop?.addEventListener("click", (e) => {
+            if (e.target === backdrop) handleClose();
         });
     }
 }

@@ -20,13 +20,20 @@
     box-shadow:
         0 15px 40px rgba(0, 0, 0, 0.6),
         inset 0 0 50px rgba(139, 90, 43, 0.25);
-    max-width: 480px;
-    width: 100%;
-    padding: 2rem 2.2rem;
+
+    /* Responsive sizing relative to viewport */
+    width: min(90vw, 520px);
+    max-height: 85vh;
+
+    /* Layout */
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1.8rem;
     color: #2b1704;
     font-family: "Georgia", serif;
     transform: scale(0.95);
     animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    box-sizing: border-box;
 }
 
 @keyframes fadeIn {
@@ -105,6 +112,16 @@
     color: #3e2723;
     margin: 0;
 }
+.event-station-card {
+    transition:
+        transform 0.15s ease-out,
+        filter 0.15s ease-out;
+}
+
+.event-station-card:hover rect {
+    stroke: #8b261b;
+    stroke-width: 2.4px;
+}
 
 /* Island Modals */
 .island-modal {
@@ -115,10 +132,21 @@
     font-size: 13px;
 }
 .island-modal-pannel {
-    margin-top: 50;
+    margin-top: 1rem;
     background: rgba(139, 90, 43, 0.08);
     border-radius: 4px;
     padding: 0.6rem 0.8rem;
-    margin-bottom: 0rem;
+    margin-bottom: 0;
     font-size: 13px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1 1 auto;
+}
+
+/* Ensure SVG scales inside container and keeps correct aspect ratio */
+.island-modal-svg {
+    display: block;
+    width: 100%;
+    height: auto;
 }
