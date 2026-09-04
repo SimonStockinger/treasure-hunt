@@ -1,4 +1,8 @@
-import type { MapEvent } from "../../types";
+import type { DayData, MapEvent, Point } from "../../types";
+import {
+    renderEventStationCard,
+    getEventCardDimensions,
+} from "./islandRenderer";
 
 export function renderEventModal(event: MapEvent, dayLabel: string): string {
     return `
@@ -29,6 +33,57 @@ export function renderEventModal(event: MapEvent, dayLabel: string): string {
         <p class="modal-desc">
           ${event.description || ""}
         </p>
+      </div>
+    </div>
+  `;
+}
+
+export function renderIslandModal(
+    dayData: DayData,
+    dayLabel: string,
+    currentDayKey: string,
+    activeEventId: string | null,
+): string {
+    const panelWidth = 500;
+    const sideMargin = 12;
+    const fullCardWidth = panelWidth - sideMargin * 2;
+    const cardGap = 16;
+    let currentY = 12;
+
+    const cards = dayData.events.map((event) => {
+        const isActive =
+            dayData.day === currentDayKey && event.id === activeEventId;
+        const { boxH } = getEventCardDimensions(event, isActive, fullCardWidth);
+
+        const x = sideMargin;
+        const y = currentY;
+
+        currentY += boxH + cardGap;
+
+        return renderEventStationCard(
+            event,
+            isActive,
+            x,
+            y,
+            fullCardWidth,
+            dayData.day,
+        );
+    });
+
+    const totalHeight = Math.max(120, currentY + 8);
+
+    return `
+    <div class="parchment-modal-backdrop" id="modal-backdrop">
+      <div class="parchment-modal-scroll" role="dialog">
+        <button class="modal-close" id="modal-close-btn" aria-label="Schließen">&times;</button>
+
+        <div class="modal-tag">${dayLabel.toUpperCase()}</div>
+
+        <svg class="island-modal-svg" viewBox="0 0 ${panelWidth} ${totalHeight}" width="100%">
+          ${cards.join("")}
+        </svg>
+
+        <div class="modal-divider">~ ☠ ~</div>
       </div>
     </div>
   `;

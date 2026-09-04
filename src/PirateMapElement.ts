@@ -1,6 +1,7 @@
 import { layoutArchipelago } from "./engine/layout/archipelagoLayout";
 import { generateSeamlessMasterRoute } from "./engine/rendering/seamlessPath";
 import { renderArchipelagoIsland } from "./engine/rendering/islandRenderer";
+import mapStyles from "./styles/style.css?inline";
 
 import { renderRhumbLines } from "./engine/rendering/pirateArtRenderer";
 import {
@@ -12,7 +13,10 @@ import {
 } from "./engine/rendering/terrainRenderer";
 import { getCurrentWeekDay, getActiveEventId } from "./engine/util/timeUtils";
 import type { DayData, Point, MapOrientation } from "./types";
-import { renderEventModal } from "./engine/rendering/modalRenderer";
+import {
+    renderEventModal,
+    renderIslandModal,
+} from "./engine/rendering/modalRenderer";
 
 export class PirateMapElement extends HTMLElement {
     private shadow: ShadowRoot;
@@ -80,185 +84,7 @@ export class PirateMapElement extends HTMLElement {
 
     private render() {
         this.shadow.innerHTML = `
-      <style>
-      :host {
-        display: block;
-        width: 100%;
-        max-width: 100%;
-        margin: 0 auto;
-        user-select: none;
-        font-family: 'Cinzel Decorative', 'Georgia', serif;
-        position: relative;
-      }
-
-      .parchment-frame {
-        position: relative;
-        width: 100%;
-        background: #d8c29d;
-        border: 10px solid #2b1810;
-        border-radius: 12px;
-        box-shadow: inset 0 0 70px rgba(43, 24, 16, 0.5), 0 15px 40px rgba(0,0,0,0.55);
-        overflow: hidden;
-      }
-
-      svg {
-        display: block;
-        width: 100%;
-        height: auto;
-      }
-
-      /* Background ignores mouse interaction */
-      .map-bg, .map-deko, .rhumb-line {
-        pointer-events: none;
-      }
-
-      /* Hover-Effekte auf Inseln */
-      .island-group {
-        cursor: pointer;
-        transition: filter 0.25s ease;
-      }
-
-      .island-group:hover {
-        filter: drop-shadow(0 0 14px rgba(43, 24, 16, 0.45));
-      }
-
-      /* Hover-Effekte auf Event-Stationen */
-      .event-node {
-        cursor: pointer;
-      }
-
-      .event-node-inner {
-        transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      }
-
-      .event-node:hover .event-node-inner {
-        transform: scale(1.12);
-      }
-
-      .event-node:hover rect {
-        stroke: #8b261b;
-        stroke-width: 2.2px;
-      }
-
-      /* Animationen */
-      .docked-flagship-bob {
-        transform-origin: 14px 0px;
-        animation: shipBobbing 3.5s ease-in-out infinite alternate;
-      }
-
-      @keyframes shipBobbing {
-        0% { transform: translateY(0px) rotate(-3deg); }
-        100% { transform: translateY(-6px) rotate(3deg); }
-      }
-
-      .is-current-active .event-node-inner {
-        animation: currentPulse 2.2s ease-in-out infinite alternate;
-      }
-
-      @keyframes currentPulse {
-        0% { transform: scale(1); }
-        100% { transform: scale(1.08); }
-      }
-
-      /* Pergament-Detail Modal */
-      .parchment-modal-backdrop {
-        position: absolute;
-        inset: 0;
-        background: rgba(26, 15, 10, 0.65);
-        backdrop-filter: blur(3px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 1.5rem;
-        z-index: 100;
-        animation: fadeIn 0.2s ease;
-      }
-
-      .parchment-modal-scroll {
-        position: relative;
-        background: #fdf5e2;
-        border: 4px solid #4a2e18;
-        border-radius: 8px;
-        box-shadow: 0 15px 40px rgba(0,0,0,0.6), inset 0 0 50px rgba(139, 90, 43, 0.25);
-        max-width: 480px;
-        width: 100%;
-        padding: 2rem 2.2rem;
-        color: #2b1704;
-        font-family: 'Georgia', serif;
-        transform: scale(0.95);
-        animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-      }
-
-      .modal-close {
-        position: absolute;
-        top: 10px;
-        right: 14px;
-        background: none;
-        border: none;
-        font-size: 28px;
-        color: #8b261b;
-        cursor: pointer;
-        line-height: 1;
-      }
-
-      .modal-wax-seal {
-        font-size: 32px;
-        text-align: center;
-        margin-bottom: 0.25rem;
-      }
-
-      .modal-tag {
-        text-align: center;
-        font-size: 11px;
-        font-weight: bold;
-        letter-spacing: 2px;
-        color: #8b261b;
-        font-family: 'Cinzel Decorative', Georgia, serif;
-      }
-
-      .modal-title {
-        margin: 0.5rem 0 1rem 0;
-        text-align: center;
-        font-size: 20px;
-        color: #1f1208;
-        font-family: 'Cinzel Decorative', Georgia, serif;
-      }
-
-      .modal-meta {
-        background: rgba(139, 90, 43, 0.08);
-        border-radius: 4px;
-        padding: 0.6rem 0.8rem;
-        margin-bottom: 1rem;
-        font-size: 13px;
-      }
-
-      .modal-meta-item {
-        margin-bottom: 4px;
-      }
-
-      .modal-divider {
-        text-align: center;
-        color: #8b5a2b;
-        margin: 0.8rem 0;
-        font-size: 14px;
-      }
-
-      .modal-desc {
-        font-size: 14px;
-        line-height: 1.6;
-        color: #3e2723;
-        margin: 0;
-      }
-
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
-
-      @keyframes popIn {
-        to { transform: scale(1); }
-      }
-      </style>
+      <style>${mapStyles}</style>
       <div class="parchment-frame">
         <svg preserveAspectRatio="xMidYMid meet" id="map-svg"></svg>
       </div>
@@ -346,33 +172,118 @@ export class PirateMapElement extends HTMLElement {
             .join("")}
 
         <!-- Flaggship -->
-        ${renderDockedShip(currentIsland.entryPoint)}
+
+        ${(() => {
+            const index = Number(activeEventId?.replace(/\D/g, "")) - 1;
+            return renderDockedShip(
+                currentIsland.eventPoints[index]
+                    ? currentIsland.eventPoints[index]
+                    : currentIsland.entryPoint,
+            );
+        })()}
       `;
 
-        this.attachInteractions(days);
+        this.attachInteractions(days, currentDayKey, activeEventId);
     }
 
-    private attachInteractions(days: DayData[]) {
+    private attachInteractions(
+        days: DayData[],
+        currentDayKey: string,
+        activeEventId: string | null,
+    ) {
         const container = this.shadow.querySelector(".parchment-frame");
         if (!container) return;
 
-        this.shadow.querySelectorAll(".event-node").forEach((node) => {
-            node.addEventListener("click", (e) => {
+        container.addEventListener("click", (e: Event) => {
+            const target = e.target as HTMLElement;
+
+            const node = target.closest<HTMLElement>(".event-node");
+            if (node) {
                 e.stopPropagation();
-                const eventId = node.getAttribute("data-event-id");
-                const dayKey = node.getAttribute("data-day");
-
-                const day = days.find((d) => d.day === dayKey);
-                const event = day?.events.find((ev) => ev.id === eventId);
-
+                const { event, day } = this.resolveEventData(node, days);
                 if (event && day) {
-                    this.openModal(event, day.label);
+                    this.openEventModal(event, day.label);
                 }
+                return;
+            }
+
+            const island = target.closest<HTMLElement>(".island-group");
+            if (island) {
+                const dayKey = island.getAttribute("data-day");
+
+                e.stopPropagation();
+                const day = days.find((d) => d.day === dayKey);
+                if (day?.events) {
+                    this.openIslandModal(
+                        day,
+                        day.label,
+                        currentDayKey,
+                        activeEventId,
+                    );
+                }
+                return;
+            }
+        });
+    }
+
+    private resolveEventData(el: HTMLElement, days: DayData[]) {
+        const eventId = el.getAttribute("data-event-id");
+        const dayKey = el.getAttribute("data-day");
+
+        const day = days.find((d) => d.day === dayKey);
+        const event = day?.events.find((ev) => ev.id === eventId);
+
+        return { event, day };
+    }
+
+    private openIslandModal(
+        dayData: DayData,
+        dayLabel: string,
+        currentDayKey: string,
+        activeEventId: string | null,
+    ) {
+        const container = this.shadow.querySelector(".parchment-frame");
+        if (!container) return;
+
+        this.shadow.querySelector("#modal-backdrop")?.remove();
+
+        container.insertAdjacentHTML(
+            "beforeend",
+            renderIslandModal(dayData, dayLabel, currentDayKey, activeEventId),
+        );
+
+        const backdrop = this.shadow.querySelector("#modal-backdrop");
+        const closeBtn = this.shadow.querySelector("#modal-close-btn");
+        const closeModal = () => backdrop?.remove();
+
+        closeBtn?.addEventListener("click", closeModal);
+        backdrop?.addEventListener("click", (e) => {
+            if (e.target === backdrop) closeModal();
+        });
+
+        const eventCards = backdrop?.querySelectorAll<SVGElement>(
+            ".event-station-card",
+        );
+        eventCards?.forEach((card) => {
+            card.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const eventId = card.getAttribute("data-event-id");
+                const event = dayData.events.find((ev) => ev.id === eventId);
+                if (!event) return;
+
+                this.openEventModal(event, dayLabel, () => {
+                    this.openIslandModal(
+                        dayData,
+                        dayLabel,
+                        currentDayKey,
+                        activeEventId,
+                    );
+                });
             });
         });
     }
 
-    private openModal(event: any, dayLabel: string) {
+    private openEventModal(event: any, dayLabel: string, onBack?: () => void) {
         const container = this.shadow.querySelector(".parchment-frame");
         if (!container) return;
 
@@ -386,11 +297,16 @@ export class PirateMapElement extends HTMLElement {
         const backdrop = this.shadow.querySelector("#modal-backdrop");
         const closeBtn = this.shadow.querySelector("#modal-close-btn");
 
-        const closeModal = () => backdrop?.remove();
+        const handleClose = () => {
+            backdrop?.remove();
+            if (onBack) {
+                onBack();
+            }
+        };
 
-        closeBtn?.addEventListener("click", closeModal);
+        closeBtn?.addEventListener("click", handleClose);
         backdrop?.addEventListener("click", (e) => {
-            if (e.target === backdrop) closeModal();
+            if (e.target === backdrop) handleClose();
         });
     }
 }

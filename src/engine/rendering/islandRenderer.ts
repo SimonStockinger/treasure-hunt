@@ -10,7 +10,7 @@ export function renderArchipelagoIsland(
     isLast: boolean,
 ): string {
     const { dayData, index, center, radiusX, radiusY, eventPoints } = island;
-    const seed = (index + 1) * 42; // Defines island shape
+    const seed = (index + 1) * 42;
 
     const config = getIslandConfig(dayData, isLast);
 
@@ -43,8 +43,7 @@ export function renderArchipelagoIsland(
 
       <path class="map-bg" d="${island.inlandPath}" fill="none" stroke="#3a3335" stroke-width="3" stroke-dasharray="8, 12" stroke-linecap="round" />
 
-
-      <!-- Events alonge vertical axis -->
+      <!-- Events along vertical axis -->
       ${dayData.events
           .map((event, eIdx) => {
               const pt = eventPoints[eIdx] || center;
@@ -95,16 +94,25 @@ function generateCoastline(
     return d;
 }
 
-function renderEventStation(
+export interface EventCardDimensions {
+    boxW: number;
+    boxH: number;
+}
+
+/**
+ * Calculates card size based on content text lengths.
+ */
+export function getEventCardDimensions(
     event: MapEvent,
-    x: number,
-    y: number,
     isActive: boolean,
-    dayKey: string,
-    eventIndex: number,
-): string {
-    // Event station Card
-    const isRightSide = eventIndex % 2 === 0;
+    customWidth?: number,
+): EventCardDimensions {
+    if (customWidth !== undefined) {
+        return {
+            boxW: customWidth,
+            boxH: event.location ? 76 : 58,
+        };
+    }
 
     const titleLen = event.title ? event.title.length : 0;
     const locLen = event.location ? event.location.length + 3 : 0;
@@ -113,9 +121,82 @@ function renderEventStation(
     const maxChars = Math.max(titleLen, locLen, timeLen, 14);
     const paddingX = isActive ? 50 : 32;
     const boxW = Math.max(210, Math.round(maxChars * 9.8) + paddingX);
+    const boxH = event.location ? 76 : 58;
 
+    return { boxW, boxH };
+}
+
+/**
+ * Renders the event card SVG elements.
+ * Can be positioned using custom offsetX/offsetY (defaults to 0, 0).
+ */
+export function renderEventStationCard(
+    event: MapEvent,
+    isActive: boolean,
+    offsetX: number = 0,
+    offsetY: number = 0,
+    customWidth?: number,
+    dayKey?: string,
+): string {
+    const { boxW, boxH } = getEventCardDimensions(event, isActive, customWidth);
     const hasLocation = Boolean(event.location);
-    const boxH = hasLocation ? 76 : 58;
+
+    return `
+     <g class="event-station-card"
+        transform="translate(${offsetX}, ${offsetY})"
+        data-event-id="${event.id}"
+        ${dayKey ? `data-day="${dayKey}"` : ""}
+        style="cursor: pointer;">
+       <rect width="${boxW}" height="${boxH}" rx="8"
+             fill="${isActive ? "#fffdf5" : "#fdfaf2"}"
+             stroke="${isActive ? "#a71d1d" : "#6d4c32"}"
+             stroke-width="${isActive ? "3.2" : "2"}"
+             filter="drop-shadow(2px 5px ${isActive ? "14px rgba(167, 29, 29, 0.55)" : "6px rgba(0,0,0,0.25)"})" />
+
+       ${
+           isActive
+               ? `
+         <g transform="translate(${boxW - 24}, ${boxH / 2 + 12}) scale(1.4)">
+           <text x="1" y="1" font-size="30" font-weight="900" fill="#e8d8ba" text-anchor="middle" opacity="0.9">✕</text>
+           <text x="0" y="0" font-size="30" font-weight="900" fill="#a71d1d" text-anchor="middle">✕</text>
+         </g>
+       `
+               : ""
+       }
+
+       <text x="14" y="20" font-size="12.5" font-weight="bold" fill="${isActive ? "#a71d1d" : "#6d4c41"}">
+         ${event.time || "Ganztägig"}
+       </text>
+
+       <text x="14" y="42" font-size="15" font-weight="900" fill="${isActive ? "#8b1e0f" : "#1a0f07"}">
+         ${event.title}
+       </text>
+
+       ${
+           hasLocation
+               ? `
+         <text x="14" y="62" font-size="12.5" font-weight="bold" fill="#5d4037">
+           📍 ${event.location}
+         </text>
+       `
+               : ""
+       }
+     </g>
+   `;
+}
+/**
+ * Renders the node pin on the map along with the attached event card.
+ */
+export function renderEventStation(
+    event: MapEvent,
+    x: number,
+    y: number,
+    isActive: boolean,
+    dayKey: string,
+    eventIndex: number,
+): string {
+    const isRightSide = eventIndex % 2 === 0;
+    const { boxW, boxH } = getEventCardDimensions(event, isActive);
 
     const boxX = isRightSide ? 22 : -(boxW + 22);
     const boxY = -(boxH / 2);
@@ -126,53 +207,15 @@ function renderEventStation(
        data-event-id="${event.id}"
        data-day-key="${dayKey}"
        data-day="${dayKey}">
+
       <g class="event-node-inner">
         <!-- Point -->
         <circle cx="0" cy="0" r="${isActive ? "11" : "8"}"
                 fill="${isActive ? "#a71d1d" : "#4e342e"}"
                 stroke="#f4ebd9" stroke-width="${isActive ? "3.5" : "2.2"}" />
 
-        <!-- Enlarged Note -->
-        <g transform="translate(${boxX}, ${boxY})">
-          <rect width="${boxW}" height="${boxH}" rx="8"
-                fill="${isActive ? "#fffdf5" : "#fdfaf2"}"
-                stroke="${isActive ? "#a71d1d" : "#6d4c32"}"
-                stroke-width="${isActive ? "3.2" : "2"}"
-                filter="drop-shadow(2px 5px ${isActive ? "14px rgba(167, 29, 29, 0.55)" : "6px rgba(0,0,0,0.25)"})" />
-
-          <!-- Mark currently active event -->
-          ${
-              isActive
-                  ? `
-            <g transform="translate(${boxW - 24}, ${boxH / 2 + 12}) scale(1.4)">
-              <text x="1" y="1" font-size="30" font-weight="900" fill="#e8d8ba" text-anchor="middle" opacity="0.9">✕</text>
-              <text x="0" y="0" font-size="30" font-weight="900" fill="#a71d1d" text-anchor="middle">✕</text>
-            </g>
-          `
-                  : ""
-          }
-
-          <!-- 1. Row: Time -->
-          <text x="14" y="20" font-size="12.5" font-weight="bold" fill="${isActive ? "#a71d1d" : "#6d4c41"}">
-            ${event.time || "Ganztägig"}
-          </text>
-
-          <!-- 2. Row: Title -->
-          <text x="14" y="42" font-size="15" font-weight="900" fill="${isActive ? "#8b1e0f" : "#1a0f07"}">
-            ${event.title}
-          </text>
-
-          <!-- 3. Row: Location -->
-          ${
-              hasLocation
-                  ? `
-            <text x="14" y="62" font-size="12.5" font-weight="bold" fill="#5d4037">
-              📍 ${event.location}
-            </text>
-          `
-                  : ""
-          }
-        </g>
+        <!-- Attached Note Card -->
+        ${renderEventStationCard(event, isActive, boxX, boxY)}
       </g>
     </g>
   `;
