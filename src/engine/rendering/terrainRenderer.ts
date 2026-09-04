@@ -133,7 +133,7 @@ export function renderTerrainFeature(
 export function renderDockedShip(
     pos: Point,
     shipSvgUrl: string = dockedShipSvg,
-    size: { width: number; height: number } = { width: 80, height: 80 },
+    size: { width: number; height: number } = { width: 96, height: 96 },
 ): string {
     const offsetX = -(size.width / 2);
     const offsetY = -(size.height * 0.75);

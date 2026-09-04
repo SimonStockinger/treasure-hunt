@@ -171,16 +171,6 @@ export class PirateMapElement extends HTMLElement {
             })
             .join("")}
 
-        <!-- Flaggship -->
-
-        ${(() => {
-            const index = Number(activeEventId?.replace(/\D/g, "")) - 1;
-            return renderDockedShip(
-                currentIsland.eventPoints[index]
-                    ? currentIsland.eventPoints[index]
-                    : currentIsland.entryPoint,
-            );
-        })()}
       `;
 
         this.attachInteractions(days, currentDayKey, activeEventId);

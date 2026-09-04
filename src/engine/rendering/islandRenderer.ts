@@ -1,5 +1,5 @@
 import type { MapEvent, Point, Island } from "../../types";
-import { renderTerrainFeature } from "./terrainRenderer";
+import { renderDockedShip, renderTerrainFeature } from "./terrainRenderer";
 import { getIslandConfig } from "../data_generation/islandGenerator";
 import { pseudoRandom } from "../util/random";
 
@@ -213,6 +213,9 @@ export function renderEventStation(
         <circle cx="0" cy="0" r="${isActive ? "11" : "8"}"
                 fill="${isActive ? "#a71d1d" : "#4e342e"}"
                 stroke="#f4ebd9" stroke-width="${isActive ? "3.5" : "2.2"}" />
+
+        <!-- Flaggship -->
+        ${isActive ? renderDockedShip({ x: 0, y: 0 }) : ""}
 
         <!-- Attached Note Card -->
         ${renderEventStationCard(event, isActive, boxX, boxY)}
